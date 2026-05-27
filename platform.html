@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SilkRoad Agri — Kazakhstan–China Agricultural Trade Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1a0f;--paper:#f7f4ee;--sage:#3d5a3e;--sage-light:#e8efe8;--sage-mid:#8aab8b;
+  --amber:#c8721a;--amber-light:#fdf0e3;--red:#c0392b;--blue:#1a5276;--blue-light:#eaf2ff;
+  --border:rgba(15,26,15,0.12);--border-strong:rgba(15,26,15,0.22);
+  --mono:'DM Mono',monospace;--serif:'DM Serif Display',serif;--sans:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;}
+.page{display:none;}.page.active{display:block;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;
+  border-bottom:1px solid rgba(247,244,238,.1);}
+.nav-logo{font-family:var(--serif);font-size:1.2rem;letter-spacing:-.01em;cursor:pointer;}
+.nav-logo span{color:var(--sage-mid);}
+.nav-links{display:flex;gap:1.75rem;font-size:13px;font-weight:500;letter-spacing:.02em;}
+.nav-links a{color:rgba(247,244,238,.65);text-decoration:none;cursor:pointer;transition:color .15s;padding-bottom:2px;border-bottom:2px solid transparent;}
+.nav-links a:hover{color:var(--paper);}
+.nav-links a.active{color:var(--paper);border-bottom-color:var(--sage-mid);}
+.nav-right{display:flex;gap:.75rem;align-items:center;}
+.btn-ghost{background:transparent;border:1px solid rgba(247,244,238,.25);color:var(--paper);padding:7px 16px;border-radius:4px;font-size:13px;cursor:pointer;font-family:var(--sans);}
+.btn-primary{background:var(--sage);border:none;color:var(--paper);padding:7px 16px;border-radius:4px;font-size:13px;cursor:pointer;font-family:var(--sans);font-weight:500;}
+.demo-banner{background:var(--amber-light);border-bottom:1px solid rgba(200,114,26,.2);padding:8px 2.5rem;font-size:12px;color:var(--amber);text-align:center;}
+
+/* ── TICKER ── */
+.ticker{background:var(--sage);color:var(--paper);padding:8px 0;overflow:hidden;font-size:12px;font-family:var(--mono);}
+.ticker-inner{display:flex;gap:4rem;white-space:nowrap;animation:scrollticker 35s linear infinite;}
+.ticker-item{display:flex;align-items:center;gap:.75rem;}
+.ticker-item .lbl{opacity:.6;}.ticker-item .prc{font-weight:500;}
+.chg{padding:1px 6px;border-radius:2px;font-size:11px;}
+.up{background:rgba(255,255,255,.2);color:#a8e6a8;}.dn{background:rgba(255,255,255,.12);color:#f5a0a0;}
+.sep{opacity:.25;}
+@keyframes scrollticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SHARED ── */
+.wrap{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem;}
+.eyebrow::before{content:'';display:block;width:20px;height:2px;background:var(--sage);}
+h2.sec{font-family:var(--serif);font-size:2.2rem;line-height:1.1;margin-bottom:.65rem;}
+.sub{opacity:.6;max-width:500px;line-height:1.75;margin-bottom:2.5rem;}
+.btn-lg{background:var(--sage);color:var(--paper);padding:13px 26px;border-radius:4px;border:none;font-size:15px;font-weight:500;font-family:var(--sans);cursor:pointer;}
+.btn-outline{background:transparent;color:var(--ink);padding:12px 24px;border-radius:4px;border:1.5px solid var(--border-strong);font-size:14px;font-weight:500;font-family:var(--sans);cursor:pointer;}
+.btn-sm{background:var(--sage);color:var(--paper);padding:8px 18px;border-radius:4px;border:none;font-size:13px;font-weight:500;font-family:var(--sans);cursor:pointer;}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:3px;letter-spacing:.04em;}
+.tag-green{background:var(--sage-light);color:var(--sage);}
+.tag-amber{background:var(--amber-light);color:var(--amber);}
+.tag-blue{background:var(--blue-light);color:var(--blue);}
+.tag-red{background:#fde8e8;color:var(--red);}
+.card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;}
+.card-featured{border:1.5px solid var(--sage);}
+.divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+.mono{font-family:var(--mono);}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:var(--paper);padding:3.5rem 2.5rem 2rem;}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;}
+.footer-brand{font-family:var(--serif);font-size:1.25rem;margin-bottom:.65rem;}
+.footer-brand span{color:var(--sage-mid);}
+.footer-tag{font-size:12px;opacity:.4;max-width:230px;line-height:1.7;}
+.footer-col-h{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.35;margin-bottom:.85rem;}
+.footer-links{list-style:none;}
+.footer-links li{font-size:13px;opacity:.5;margin-bottom:.45rem;cursor:pointer;}
+.footer-links li:hover{opacity:.8;}
+.footer-bottom{max-width:1200px;margin:2rem auto 0;padding-top:1.25rem;border-top:1px solid rgba(247,244,238,.08);display:flex;justify-content:space-between;font-size:12px;opacity:.3;}
+
+/* ══════════════════════════════════════
+   PAGE: HOME
+══════════════════════════════════════ */
+.hero{padding:5rem 2.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;}
+.hero-kicker{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.hero-kicker::before{content:'';display:block;width:24px;height:2px;background:var(--sage);}
+h1{font-family:var(--serif);font-size:3.1rem;line-height:1.07;letter-spacing:-.02em;margin-bottom:1.4rem;}
+h1 em{font-style:italic;color:var(--sage);}
+.hero-desc{font-size:1rem;opacity:.65;max-width:430px;line-height:1.75;margin-bottom:2rem;}
+.hero-cta{display:flex;gap:1rem;align-items:center;}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);}
+.stat-n{font-family:var(--serif);font-size:2rem;}
+.stat-l{font-size:11px;opacity:.5;margin-top:2px;line-height:1.5;}
+.price-panel{background:var(--ink);color:var(--paper);border-radius:12px;padding:2rem;font-family:var(--mono);}
+.pp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.pp-title{font-family:var(--sans);font-size:12px;opacity:.45;letter-spacing:.05em;text-transform:uppercase;}
+.live-dot{display:flex;align-items:center;gap:.4rem;font-size:11px;opacity:.55;}
+.dot{width:6px;height:6px;border-radius:50%;background:#4caf50;animation:pls 2s infinite;}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.25}}
+.prow{padding:.85rem 0;border-bottom:1px solid rgba(247,244,238,.08);}
+.prow:last-child{border-bottom:none;}
+.pname{font-family:var(--sans);font-size:12px;opacity:.5;margin-bottom:.3rem;}
+.pprice{font-size:1.45rem;font-weight:500;letter-spacing:-.02em;}
+.pmeta{display:flex;gap:1.25rem;margin-top:.25rem;font-size:11px;opacity:.4;}
+.pbar{margin-top:.5rem;height:2px;background:rgba(247,244,238,.1);border-radius:2px;}
+.pbar-fill{height:100%;background:var(--sage-mid);border-radius:2px;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:3rem;}
+.how-card{padding:1.5rem;border:1px solid rgba(247,244,238,.1);border-radius:8px;}
+.how-num{font-family:var(--mono);font-size:11px;opacity:.3;margin-bottom:1rem;}
+.how-icon{font-size:1.4rem;margin-bottom:.65rem;}
+.how-title{font-family:var(--serif);font-size:1.1rem;margin-bottom:.4rem;}
+.how-desc{font-size:13px;opacity:.5;line-height:1.65;}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem;}
+.trust-icon{width:38px;height:38px;background:var(--sage-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.85rem;}
+.trust-title{font-weight:600;margin-bottom:.4rem;font-size:14px;}
+.trust-desc{font-size:13px;opacity:.6;line-height:1.65;}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.news-date{font-size:11px;opacity:.4;margin-bottom:.4rem;font-family:var(--mono);}
+.news-title{font-size:14px;font-weight:500;line-height:1.4;}
+.news-src{font-size:11px;opacity:.4;margin-top:.4rem;}
+
+/* ══════════════════════════════════════
+   PAGE: MARKET (Price Index)
+══════════════════════════════════════ */
+.mkt-hero{padding:3rem 2.5rem 2rem;background:var(--ink);color:var(--paper);}
+.mkt-hero-inner{max-width:1200px;margin:0 auto;}
+.mkt-tabs{display:flex;gap:0;border:1px solid rgba(247,244,238,.15);border-radius:6px;overflow:hidden;margin-top:1.75rem;width:fit-content;}
+.mkt-tab{padding:8px 20px;font-size:13px;font-weight:500;cursor:pointer;border-right:1px solid rgba(247,244,238,.15);color:rgba(247,244,238,.55);background:transparent;border-top:none;border-bottom:none;border-left:none;font-family:var(--sans);}
+.mkt-tab:last-child{border-right:none;}
+.mkt-tab.active{background:var(--sage);color:var(--paper);}
+.price-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2.5rem 0;}
+.pc-label{font-size:11px;opacity:.5;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em;}
+.pc-value{font-family:var(--mono);font-size:1.6rem;font-weight:500;letter-spacing:-.02em;}
+.pc-sub{font-size:11px;opacity:.4;margin-top:.2rem;}
+.pc-change{font-size:12px;padding:2px 8px;border-radius:3px;display:inline-block;margin-top:.4rem;font-family:var(--mono);}
+.price-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:1.5rem;}
+.price-table th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;font-size:11px;letter-spacing:.04em;opacity:.5;text-transform:uppercase;}
+.price-table td{padding:12px 14px;border-bottom:1px solid var(--border);}
+.price-table tr:last-child td{border-bottom:none;}
+.price-table tr:hover td{background:var(--sage-light);}
+.chart-placeholder{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-top:1.5rem;height:200px;position:relative;overflow:hidden;}
+.chart-svg{width:100%;height:140px;}
+.chart-label{font-size:11px;opacity:.4;font-family:var(--mono);}
+.corridor-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;}
+.corridor-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;}
+.corridor-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.corridor-row:last-child{border-bottom:none;}
+.corridor-label{opacity:.6;}
+.corridor-val{font-family:var(--mono);font-weight:500;}
+
+/* ══════════════════════════════════════
+   PAGE: LISTINGS
+══════════════════════════════════════ */
+.listings-layout{display:grid;grid-template-columns:260px 1fr;gap:2rem;padding:2.5rem;max-width:1200px;margin:0 auto;}
+.filter-sidebar{position:sticky;top:72px;height:fit-content;}
+.filter-section{margin-bottom:2rem;}
+.filter-title{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;opacity:.45;margin-bottom:.85rem;}
+.filter-item{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;font-size:13px;cursor:pointer;}
+.filter-item input{accent-color:var(--sage);}
+.filter-range{display:flex;gap:.5rem;align-items:center;font-size:12px;opacity:.6;}
+.range-input{width:90px;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--mono);background:white;}
+.listings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.sort-sel{padding:7px 12px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:var(--sans);background:white;}
+.listing-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.25rem;transition:box-shadow .2s;}
+.listing-card:hover{box-shadow:0 3px 16px rgba(15,26,15,.07);}
+.listing-card.featured{border-color:var(--sage);border-width:1.5px;}
+.lc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;}
+.lc-product{font-family:var(--serif);font-size:1.2rem;}
+.lc-origin{font-size:12px;opacity:.5;margin-top:2px;}
+.lc-price-block{text-align:right;}
+.lc-price{font-family:var(--mono);font-size:1.35rem;font-weight:500;}
+.lc-incoterm{font-size:11px;opacity:.4;margin-top:1px;}
+.lc-specs{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;padding:1rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:1rem 0;}
+.ls-k{font-size:11px;opacity:.4;margin-bottom:2px;text-transform:uppercase;letter-spacing:.03em;}
+.ls-v{font-size:13px;font-weight:500;font-family:var(--mono);}
+.lc-footer{display:flex;justify-content:space-between;align-items:center;}
+.lc-elevator{font-size:12px;opacity:.5;display:flex;align-items:center;gap:.5rem;}
+.lc-actions{display:flex;gap:.65rem;}
+.btn-inquiry{background:white;border:1.5px solid var(--sage);color:var(--sage);padding:7px 18px;border-radius:4px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);}
+.gacc-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px;background:#e8f4e8;color:var(--sage);letter-spacing:.04em;}
+.wr-pill{font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px;background:var(--blue-light);color:var(--blue);letter-spacing:.04em;}
+.results-count{font-size:13px;opacity:.5;}
+
+/* ══════════════════════════════════════
+   PAGE: LOGISTICS
+══════════════════════════════════════ */
+.route-hero{background:var(--ink);color:var(--paper);padding:3rem 2.5rem;}
+.route-map{background:rgba(247,244,238,.04);border:1px solid rgba(247,244,238,.1);border-radius:12px;padding:2rem;margin-top:2rem;position:relative;min-height:260px;}
+.route-svg{width:100%;height:220px;}
+.route-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2.5rem 0;}
+.route-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;}
+.route-card.recommended{border-color:var(--sage);border-width:1.5px;position:relative;}
+.rec-badge{position:absolute;top:-10px;left:1rem;background:var(--sage);color:white;font-size:10px;font-weight:600;padding:2px 10px;border-radius:10px;letter-spacing:.05em;}
+.route-name{font-family:var(--serif);font-size:1.1rem;margin-bottom:.25rem;}
+.route-path{font-size:12px;opacity:.5;margin-bottom:1rem;}
+.route-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;}
+.rs-k{font-size:11px;opacity:.4;margin-bottom:2px;}
+.rs-v{font-size:14px;font-weight:500;font-family:var(--mono);}
+.timeline-section{padding:2.5rem;max-width:1200px;margin:0 auto;}
+.timeline{position:relative;padding-left:2.5rem;}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:2rem;}
+.tl-dot{position:absolute;left:-2.5rem;top:4px;width:10px;height:10px;border-radius:50%;background:var(--sage);border:2px solid var(--paper);}
+.tl-dot.done{background:var(--sage);}
+.tl-dot.current{background:var(--amber);animation:pls 2s infinite;}
+.tl-dot.todo{background:var(--border-strong);}
+.tl-day{font-size:11px;font-family:var(--mono);opacity:.4;margin-bottom:2px;}
+.tl-event{font-weight:500;margin-bottom:3px;}
+.tl-detail{font-size:13px;opacity:.55;line-height:1.6;}
+.freight-calc{background:white;border:1px solid var(--border);border-radius:10px;padding:1.75rem;margin-top:1.5rem;}
+.fc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.fc-input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--mono);background:var(--paper);}
+.fc-label{font-size:11px;opacity:.5;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.03em;}
+.fc-result{background:var(--ink);color:var(--paper);border-radius:8px;padding:1.25rem;font-family:var(--mono);}
+.fcr-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(247,244,238,.08);font-size:13px;}
+.fcr-row:last-child{border-bottom:none;}
+.fcr-total{display:flex;justify-content:space-between;padding-top:.85rem;margin-top:.5rem;border-top:1px solid rgba(247,244,238,.2);}
+.fcr-total-val{font-size:1.3rem;font-weight:500;color:var(--sage-mid);}
+
+/* ══════════════════════════════════════
+   PAGE: FINANCE
+══════════════════════════════════════ */
+.finance-hero{background:var(--ink);color:var(--paper);padding:3rem 2.5rem;}
+.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;padding:2.5rem;max-width:1200px;margin:0 auto;}
+.flow-diagram{background:white;border:1px solid var(--border);border-radius:10px;padding:2rem;}
+.flow-title{font-family:var(--serif);font-size:1.2rem;margin-bottom:1.5rem;}
+.flow-step{display:flex;gap:1rem;margin-bottom:1.25rem;align-items:flex-start;}
+.flow-num{width:28px;height:28px;min-width:28px;border-radius:50%;background:var(--sage-light);color:var(--sage);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;margin-top:1px;}
+.flow-content-title{font-weight:500;font-size:14px;margin-bottom:2px;}
+.flow-content-sub{font-size:12px;opacity:.55;line-height:1.55;}
+.flow-arrow{text-align:center;color:var(--sage-mid);font-size:18px;margin:-.5rem 0 -.5rem 13px;}
+.finance-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
+.fin-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;}
+.fin-card-icon{width:40px;height:40px;background:var(--sage-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.85rem;}
+.fin-card-title{font-weight:600;font-size:14px;margin-bottom:.4rem;}
+.fin-card-desc{font-size:13px;opacity:.6;line-height:1.65;}
+.lc-guide{background:white;border:1px solid var(--border);border-radius:10px;padding:1.75rem;}
+.lc-step-row{display:flex;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--border);}
+.lc-step-row:last-child{border-bottom:none;}
+.lc-step-num{font-family:var(--mono);font-size:11px;opacity:.35;width:24px;flex-shrink:0;padding-top:2px;}
+.lc-step-body{flex:1;}
+.lc-step-title{font-weight:500;font-size:14px;margin-bottom:3px;}
+.lc-step-desc{font-size:12px;opacity:.55;line-height:1.6;}
+.lc-step-timing{font-size:11px;font-family:var(--mono);color:var(--sage);margin-top:3px;}
+.vat-section{background:var(--sage-light);padding:2.5rem;border-radius:10px;margin:2rem 0;}
+.vat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;}
+.vat-card{background:white;border-radius:8px;padding:1.25rem;}
+.vat-scenario{font-weight:600;font-size:13px;margin-bottom:.5rem;}
+.vat-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+.vat-row:last-child{border-bottom:none;}
+.vat-key{opacity:.55;}
+.vat-val{font-family:var(--mono);font-weight:500;}
+.vat-highlight{color:var(--sage);font-weight:600;}
+.vat-warn{color:var(--red);}
+
+/* ══════════════════════════════════════
+   PAGE: ABOUT
+══════════════════════════════════════ */
+.about-hero{padding:5rem 2.5rem 4rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.about-mission{font-family:var(--serif);font-size:2.6rem;line-height:1.1;margin-bottom:1.5rem;}
+.about-mission em{font-style:italic;color:var(--sage);}
+.about-body{opacity:.65;line-height:1.8;margin-bottom:1.25rem;}
+.about-timeline{padding:3rem 2.5rem;background:var(--sage-light);}
+.atl-inner{max-width:1200px;margin:0 auto;}
+.atl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem;}
+.atl-card{background:white;border-radius:8px;padding:1.25rem;border:1px solid var(--border);}
+.atl-date{font-family:var(--mono);font-size:11px;opacity:.4;margin-bottom:.5rem;}
+.atl-event{font-weight:500;font-size:14px;line-height:1.4;}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+.team-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;}
+.team-avatar{width:64px;height:64px;border-radius:50%;background:var(--sage-light);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem;color:var(--sage);margin:0 auto 1rem;}
+.team-name{font-weight:600;margin-bottom:.25rem;}
+.team-role{font-size:13px;opacity:.55;margin-bottom:.65rem;}
+.team-bio{font-size:12px;opacity:.55;line-height:1.65;}
+.investors-section{background:var(--ink);color:var(--paper);padding:4rem 2.5rem;}
+.inv-inner{max-width:1200px;margin:0 auto;}
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;}
+.inv-card{border:1px solid rgba(247,244,238,.1);border-radius:10px;padding:1.5rem;}
+.inv-icon{font-size:1.5rem;margin-bottom:.75rem;}
+.inv-type{font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem;}
+.inv-title{font-family:var(--serif);font-size:1.1rem;margin-bottom:.5rem;}
+.inv-desc{font-size:13px;opacity:.5;line-height:1.65;}
+.pitch-cta{text-align:center;padding:4rem 2.5rem;max-width:600px;margin:0 auto;}
+.pitch-cta h2{font-family:var(--serif);font-size:2.5rem;margin-bottom:1rem;}
+.pitch-cta p{opacity:.6;margin-bottom:2rem;line-height:1.75;}
+
+/* ── CALCULATOR ── */
+.calc-section{background:var(--sage-light);padding:4rem 2.5rem;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.calc-card{background:white;border-radius:10px;padding:1.75rem;border:1px solid var(--border);}
+.calc-label{font-size:11px;opacity:.5;margin-bottom:.4rem;letter-spacing:.03em;text-transform:uppercase;}
+.calc-input{width:100%;font-size:1rem;font-weight:500;font-family:var(--mono);background:var(--paper);border:1.5px solid var(--border);border-radius:6px;padding:10px 14px;outline:none;margin-bottom:1.1rem;}
+.calc-input:focus{border-color:var(--sage);}
+.result-panel{background:var(--ink);color:var(--paper);border-radius:10px;padding:1.75rem;}
+.result-line{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(247,244,238,.07);font-size:13px;}
+.result-line:last-of-type{border-bottom:none;}
+.result-label{opacity:.5;}
+.result-val{font-family:var(--mono);font-weight:500;}
+.result-total{display:flex;justify-content:space-between;padding-top:.9rem;margin-top:.5rem;border-top:1px solid rgba(247,244,238,.18);}
+.result-total-label{font-weight:600;}
+.result-total-val{font-family:var(--mono);font-size:1.3rem;font-weight:500;color:var(--sage-mid);}
+.margin-badge{display:inline-block;background:rgba(138,171,139,.2);color:var(--sage-mid);padding:4px 12px;border-radius:20px;font-size:12px;margin-top:.85rem;font-family:var(--mono);}
+
+/* ── DASHBOARD ── */
+.dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 88px);}
+.dash-sidebar{background:var(--ink);color:var(--paper);padding:1.5rem 0;}
+.dash-nav-item{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.5rem;font-size:13px;cursor:pointer;color:rgba(247,244,238,.55);transition:all .15s;}
+.dash-nav-item:hover{background:rgba(247,244,238,.05);color:var(--paper);}
+.dash-nav-item.active{background:rgba(61,90,62,.35);color:var(--paper);border-left:2px solid var(--sage-mid);}
+.dash-nav-icon{width:16px;text-align:center;font-size:14px;}
+.dash-nav-section{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.25;padding:.5rem 1.5rem 0;margin-top:.75rem;}
+.dash-main{padding:2rem 2.5rem;background:var(--paper);}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;}
+.dash-title{font-family:var(--serif);font-size:1.75rem;}
+.dash-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.ds-card{background:white;border:1px solid var(--border);border-radius:10px;padding:1.25rem;}
+.ds-label{font-size:11px;opacity:.45;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em;}
+.ds-value{font-family:var(--serif);font-size:1.75rem;margin-bottom:.15rem;}
+.ds-sub{font-size:11px;opacity:.45;}
+.ds-trend{font-size:11px;padding:2px 7px;border-radius:3px;display:inline-block;margin-top:.3rem;font-family:var(--mono);}
+.orders-table{width:100%;border-collapse:collapse;font-size:13px;}
+.orders-table th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;font-size:11px;letter-spacing:.04em;opacity:.45;text-transform:uppercase;background:white;}
+.orders-table td{padding:11px 14px;border-bottom:1px solid var(--border);background:white;}
+.orders-table tr:last-child td{border-bottom:none;}
+.orders-table tr:hover td{background:#f9f7f3;}
+.status-pill{font-size:11px;padding:3px 9px;border-radius:10px;font-weight:500;}
+.s-open{background:var(--amber-light);color:var(--amber);}
+.s-matched{background:var(--blue-light);color:var(--blue);}
+.s-transit{background:#fff3e0;color:#e65100;}
+.s-settled{background:var(--sage-light);color:var(--sage);}
+.dash-two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;}
+.dash-widget{background:white;border:1px solid var(--border);border-radius:10px;padding:1.5rem;}
+.dw-title{font-weight:600;font-size:14px;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;}
+.dw-title span{font-size:11px;font-weight:400;opacity:.45;}
+.bid-form-row{margin-bottom:1rem;}
+.bid-label{font-size:11px;opacity:.5;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.03em;}
+.bid-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--mono);background:var(--paper);outline:none;}
+.bid-input:focus{border-color:var(--sage);}
+.bid-summary{background:var(--sage-light);border-radius:8px;padding:.85rem 1rem;font-size:13px;margin:1rem 0;}
+.bid-sum-row{display:flex;justify-content:space-between;margin-bottom:.3rem;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,26,15,.5);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:12px;padding:2rem;max-width:480px;width:90%;position:relative;}
+.modal-title{font-family:var(--serif);font-size:1.4rem;margin-bottom:.5rem;}
+.modal-sub{font-size:13px;opacity:.55;margin-bottom:1.5rem;line-height:1.6;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;cursor:pointer;opacity:.4;}
+.modal-close:hover{opacity:.8;}
+.form-row{margin-bottom:1rem;}
+.form-label{font-size:12px;font-weight:500;opacity:.6;margin-bottom:.35rem;display:block;}
+.form-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--sans);background:white;outline:none;}
+.form-input:focus{border-color:var(--sage);}
+.form-select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;font-family:var(--sans);background:white;outline:none;}
+.success-state{text-align:center;padding:1rem 0;}
+.success-icon{font-size:3rem;margin-bottom:.75rem;}
+</style>
+</head>
+<body>
+
+<!-- ═══ DEMO BANNER ═══ -->
+<div class="demo-banner">⚡ Platform Demo — Prices sourced from Grain Union of Kazakhstan weekly report & China Customs. AIFC incorporation in progress. <span style="opacity:.6">Last price update: 22 May 2026</span></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">SilkRoad<span>Agri</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('market')" id="nav-market">Market</a>
+    <a onclick="showPage('listings')" id="nav-listings">Listings</a>
+    <a onclick="showPage('logistics')" id="nav-logistics">Logistics</a>
+    <a onclick="showPage('finance')" id="nav-finance">Finance</a>
+    <a onclick="showPage('about')" id="nav-about">About</a>
+    <a onclick="showPage('dashboard')" id="nav-dashboard">My Account</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-primary" onclick="showPage('listings')">Request Access</button>
+  </div>
+</nav>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item"><span class="lbl">亚麻籽 Flaxseed EXW</span><span class="prc">$488/t</span><span class="chg up">▲1.2%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">Flaxseed FCA KZ</span><span class="prc">$512/t</span><span class="chg up">▲0.9%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">C&F Tianjin</span><span class="prc">$571/t</span><span class="chg dn">▼0.4%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">China domestic ¥</span><span class="prc">¥4,820/t</span><span class="chg up">▲0.6%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">大麦 Barley EXW</span><span class="prc">$152/t</span><span class="chg up">▲0.3%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">葵花籽油 Sunflower Oil FOB</span><span class="prc">$895/t</span><span class="chg dn">▼0.8%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">Rail KST→Khorgos</span><span class="prc">$42/t</span><span class="chg">—</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">KZT/USD</span><span class="prc">494.2</span><span class="chg dn">▼0.2%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">CNY/USD</span><span class="prc">7.24</span><span class="chg dn">▼0.1%</span></div><span class="sep">·</span>
+    <!-- dupe for seamless loop -->
+    <div class="ticker-item"><span class="lbl">亚麻籽 Flaxseed EXW</span><span class="prc">$488/t</span><span class="chg up">▲1.2%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">Flaxseed FCA KZ</span><span class="prc">$512/t</span><span class="chg up">▲0.9%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">C&F Tianjin</span><span class="prc">$571/t</span><span class="chg dn">▼0.4%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">China domestic ¥</span><span class="prc">¥4,820/t</span><span class="chg up">▲0.6%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">大麦 Barley EXW</span><span class="prc">$152/t</span><span class="chg up">▲0.3%</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">Rail KST→Khorgos</span><span class="prc">$42/t</span><span class="chg">—</span></div><span class="sep">·</span>
+    <div class="ticker-item"><span class="lbl">KZT/USD</span><span class="prc">494.2</span><span class="chg dn">▼0.2%</span></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+<div class="hero">
+  <div>
+    <div class="hero-kicker">Kazakhstan → China Corridor</div>
+    <h1>Where <em>verified supply</em> meets verified demand</h1>
+    <p class="hero-desc">The first commodity platform built specifically for the Kazakhstan–China agricultural corridor. Real-time prices, GACC-registered inventory, integrated LC finance — one place.</p>
+    <div class="hero-cta">
+      <button class="btn-lg" onclick="showPage('listings')">Browse supply →</button>
+      <button class="btn-outline" onclick="showPage('market')">View price index</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">3,601</div><div class="stat-l">KZ enterprises<br>licensed to export China</div></div>
+      <div><div class="stat-n">+82%</div><div class="stat-l">KZ agri exports to China<br>Q1 2026 growth YoY</div></div>
+      <div><div class="stat-n">890K t</div><div class="stat-l">Flaxseed exported<br>Sep–Mar 2025/26 season</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="price-panel">
+      <div class="pp-header">
+        <div class="pp-title">Live Reference Prices</div>
+        <div class="live-dot"><span class="dot"></span>Live · 14:32 AST</div>
+      </div>
+      <div class="prow">
+        <div class="pname">亚麻籽 Flaxseed HS 1204 · Brown 97%</div>
+        <div class="pprice">$512 <span style="font-size:.8rem;opacity:.4">/t FCA KZ</span></div>
+        <div class="pmeta"><span>EXW $488</span><span>C&F Tianjin $571</span><span>¥4,820 DOM</span></div>
+        <div class="pbar"><div class="pbar-fill" style="width:74%"></div></div>
+      </div>
+      <div class="prow">
+        <div class="pname">葵花籽油 Sunflower Oil HS 1512</div>
+        <div class="pprice">$895 <span style="font-size:.8rem;opacity:.4">/t FOB</span></div>
+        <div class="pmeta"><span>No export duty</span><span>C&F Shanghai est. $948</span></div>
+        <div class="pbar"><div class="pbar-fill" style="width:55%"></div></div>
+      </div>
+      <div class="prow">
+        <div class="pname">大麦 Feed Barley HS 1003</div>
+        <div class="pprice">$152 <span style="font-size:.8rem;opacity:.4">/t FCA KZ</span></div>
+        <div class="pmeta"><span>EXW $138</span><span>Rail +$42/t</span><span>Khorgos landed $212</span></div>
+        <div class="pbar"><div class="pbar-fill" style="width:28%"></div></div>
+      </div>
+      <div style="margin-top:1rem;padding-top:.85rem;border-top:1px solid rgba(247,244,238,.08);font-size:11px;opacity:.35;font-family:var(--mono)">
+        Source: Grain Union KZ weekly · APK-Inform · GACC China Customs<br>
+        Updated weekly every Monday 09:00 AST
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calculator -->
+<div class="calc-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="eyebrow">Cost Calculator</div>
+    <h2 class="sec">Build your full landed cost to China</h2>
+    <p class="sub">Enter your purchase price and target sell price. See the complete cost stack — before you make a single call.</p>
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="calc-label">Product</div>
+        <select class="calc-input" id="c-prod" onchange="homeCalc()">
+          <option value="flax">亚麻籽 Flaxseed (HS 1204) — 9% China duty</option>
+          <option value="barley">大麦 Barley (HS 1003) — 3% China duty</option>
+          <option value="oil">葵花籽油 Sunflower Oil (HS 1512) — 9% China duty</option>
+        </select>
+        <div class="calc-label">Elevator EXW price (USD/tonne)</div>
+        <input type="number" class="calc-input" id="c-ewp" value="488" oninput="homeCalc()">
+        <div class="calc-label">Quantity (tonnes)</div>
+        <input type="number" class="calc-input" id="c-qty" value="500" oninput="homeCalc()">
+        <div class="calc-label">Origin region</div>
+        <select class="calc-input" id="c-region" onchange="homeCalc()">
+          <option value="42">Kostanay Oblast → Khorgos ($42/t rail)</option>
+          <option value="38">North Kazakhstan Oblast → Khorgos ($38/t)</option>
+          <option value="46">Akmola Oblast → Khorgos ($46/t)</option>
+        </select>
+        <div class="calc-label">Your sell price to buyer (USD/tonne)</div>
+        <input type="number" class="calc-input" id="c-sell" value="571" oninput="homeCalc()" style="margin-bottom:0;">
+      </div>
+      <div class="result-panel">
+        <div style="font-size:11px;opacity:.35;letter-spacing:.06em;text-transform:uppercase;font-family:var(--sans);margin-bottom:1.1rem;">Full cost breakdown</div>
+        <div class="result-line"><span class="result-label">EXW elevator price</span><span class="result-val" id="r-ewp">$488/t</span></div>
+        <div class="result-line"><span class="result-label">+ Rail freight (KTZ)</span><span class="result-val" id="r-rail">$42/t</span></div>
+        <div class="result-line"><span class="result-label">+ Export handling & docs</span><span class="result-val">$8/t</span></div>
+        <div class="result-line"><span class="result-label">+ Platform service fee</span><span class="result-val">$5/t</span></div>
+        <div class="result-line" style="border-top:1px solid rgba(247,244,238,.15);margin-top:.4rem;padding-top:.7rem;"><span class="result-label">= Your FCA cost</span><span class="result-val" id="r-fca" style="color:var(--sage-mid);">$543/t</span></div>
+        <div style="height:.75rem;"></div>
+        <div class="result-line"><span class="result-label">+ China import duty</span><span class="result-val" id="r-duty">$49/t</span></div>
+        <div class="result-line"><span class="result-label">+ Khorgos handling + ins.</span><span class="result-val">$14/t</span></div>
+        <div class="result-line"><span class="result-label">+ China-side port / customs</span><span class="result-val">$18/t</span></div>
+        <div class="result-total">
+          <span class="result-total-label">Buyer landed cost</span>
+          <span class="result-total-val" id="r-landed">$624/t</span>
+        </div>
+        <div style="border-top:1px solid rgba(247,244,238,.12);margin-top:1rem;padding-top:1rem;">
+          <div class="result-line"><span class="result-label">Your sell price</span><span class="result-val" id="r-sell2">$571/t</span></div>
+          <div class="result-line"><span class="result-label">Gross margin / tonne</span><span class="result-val" id="r-mgn" style="color:#8aab8b;">+$28/t</span></div>
+          <div class="result-line"><span class="result-label">Total batch P&L</span><span class="result-val" id="r-tot" style="color:#8aab8b;">+$14,000</span></div>
+        </div>
+        <div class="margin-badge" id="r-pct">Margin: 4.9% · ROI on capital: ~18% annualised</div>
+        <button class="btn-lg" style="width:100%;margin-top:1.25rem;font-size:14px;" onclick="showPage('listings')">Find matching supply →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<div style="background:var(--ink);color:var(--paper);padding:4rem 2.5rem;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1rem;">
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.35;margin-bottom:.65rem;">Process</div>
+        <h2 style="font-family:var(--serif);font-size:2.1rem;">Four steps, zero guesswork</h2>
+      </div>
+      <div style="font-size:13px;opacity:.35;text-align:right;max-width:260px;">Every listing backed by a warehouse receipt. Every payment supported by CCB Astana documentary LC.</div>
+    </div>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-num">01</div><div class="how-icon">📋</div><div class="how-title">Browse verified inventory</div><div class="how-desc">All listings backed by official Kazakhstan warehouse receipts at GACC-registered elevators. No listing goes live without physical stock confirmed.</div></div>
+      <div class="how-card"><div class="how-num">02</div><div class="how-icon">💬</div><div class="how-title">Submit bid or inquiry</div><div class="how-desc">Buyers submit quantity and target price. Platform matches against available lots and confirms allocation within 24 hours.</div></div>
+      <div class="how-card"><div class="how-num">03</div><div class="how-icon">🏦</div><div class="how-title">LC via CCB Astana</div><div class="how-desc">Buyer opens Documentary LC through CCB (first Chinese bank at AIFC). Platform arranges pre-shipment finance for seller. Zero 100% prepayment deadlock.</div></div>
+      <div class="how-card"><div class="how-num">04</div><div class="how-icon">🚆</div><div class="how-title">Rail delivery + clearance</div><div class="how-desc">Goods move via Khorgos or Dostyk rail corridor. Quality cert and GACC phytosanitary docs prepared. Typical transit Kostanay → Yinchuan: 14–18 days.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Trust -->
+<div style="padding:4rem 2.5rem;max-width:1200px;margin:0 auto;">
+  <div class="eyebrow">Why SilkRoad Agri</div>
+  <h2 class="sec">Built for the problems<br>everyone else ignores</h2>
+  <div class="trust-grid">
+    <div class="card"><div class="trust-icon">📋</div><div class="trust-title">No listing without warehouse receipt</div><div class="trust-desc">Every supply listing is backed by an official KZ warehouse receipt — physical inventory verified before appearing on platform. Eliminates failed matches.</div></div>
+    <div class="card"><div class="trust-icon">🔬</div><div class="trust-title">Pre-shipment GACC certification</div><div class="trust-desc">Mandatory SGS/Bureau Veritas third-party lab inspection before listing. Bilingual quality certificate with QR code readable by Chinese customs officers.</div></div>
+    <div class="card"><div class="trust-icon">💱</div><div class="trust-title">Integrated trade finance</div><div class="trust-desc">First platform in Central Asia to integrate documentary LC via CCB Astana — the first Chinese bank licensed at AIFC. Sellers get cash, buyers use bank credit.</div></div>
+    <div class="card"><div class="trust-icon">📊</div><div class="trust-title">Transparent weekly price index</div><div class="trust-desc">Reference prices combining Grain Union of Kazakhstan data, China customs import prices, and KTZ rail freight — published free, no subscription.</div></div>
+    <div class="card"><div class="trust-icon">🏛</div><div class="trust-title">AIFC-regulated, English law</div><div class="trust-desc">Incorporated in Astana International Financial Centre. English common law jurisdiction. Disputes resolved at AIFC Court — trusted by both Chinese and Kazakh counterparties.</div></div>
+    <div class="card"><div class="trust-icon">🌐</div><div class="trust-title">Origin traceability</div><div class="trust-desc">Each batch gets a digital provenance record: farm GPS, harvest date, elevator ID, lab results — all linked to GACC registration. Eliminates origin disputes at Chinese customs.</div></div>
+  </div>
+</div>
+
+<!-- Market news -->
+<div style="background:var(--sage-light);padding:4rem 2.5rem;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="eyebrow">Market Intelligence</div>
+    <h2 class="sec">What's moving the corridor</h2>
+    <div class="news-grid">
+      <div class="card"><div class="news-date">MAY 21, 2026</div><div class="news-title">Kazakhstan flaxseed exports exceed 890,000 MT — 135% above last season</div><div class="news-src">Grain Union of Kazakhstan · APK-Inform</div></div>
+      <div class="card"><div class="news-date">MAY 20, 2026</div><div class="news-title">Kazakhstan and China agree to launch joint grain trading platform under Belt & Road</div><div class="news-src">QazInform · Ministry of Agriculture KZ</div></div>
+      <div class="card"><div class="news-date">MAY 17, 2026</div><div class="news-title">EU 50% tariff on Russian flaxseed boosts Kazakhstan's export advantage into Europe and China</div><div class="news-src">UkrAgroConsult · Mundus Agri</div></div>
+      <div class="card"><div class="news-date">MAY 14, 2026</div><div class="news-title">Rail shipment: 1,767 tonnes of Kazakh flaxseed delivered to Yinchuan, Ningxia by train</div><div class="news-src">Commodity-Board · Grain Union KZ</div></div>
+      <div class="card"><div class="news-date">MAY 12, 2026</div><div class="news-title">KZ agriculture exports to China Q1 2026: +82.4% to $550M — new quarterly record</div><div class="news-src">Ministry of Agriculture KZ</div></div>
+      <div class="card"><div class="news-date">MAY 09, 2026</div><div class="news-title">Kazakhstan sunflower seed export duty under review — Antimonopoly Committee recommends reduction</div><div class="news-src">APK-Inform · AZRK</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-home -->
+
+<!-- ════════════════════════════════════
+     PAGE: MARKET (Price Index)
+════════════════════════════════════ -->
+<div id="page-market" class="page">
+
+<div class="mkt-hero">
+  <div class="mkt-hero-inner">
+    <div style="font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem;">Kazakhstan → China Price Index</div>
+    <h1 style="font-family:var(--serif);font-size:2.5rem;margin-bottom:.5rem;">Reference prices, every week</h1>
+    <p style="opacity:.5;font-size:14px;max-width:540px;">EXW Kazakhstan, FCA, FOB, C&F Tianjin, and China domestic prices — compiled from Grain Union of Kazakhstan, APK-Inform, and China Customs. Updated every Monday.</p>
+    <div class="mkt-tabs" style="margin-top:1.5rem;">
+      <button class="mkt-tab active">Flaxseed</button>
+      <button class="mkt-tab">Barley</button>
+      <button class="mkt-tab">Sunflower Oil</button>
+      <button class="mkt-tab">Rapeseed Oil</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:2.5rem;padding-bottom:3rem;">
+
+  <div class="price-cards">
+    <div class="card"><div class="pc-label">EXW Kazakhstan</div><div class="pc-value">$488</div><div class="pc-sub">per tonne · week 21/2026</div><div class="pc-change up">▲ $6 vs last week</div></div>
+    <div class="card"><div class="pc-label">FCA Kazakhstan (export)</div><div class="pc-value">$512</div><div class="pc-sub">per tonne incl. handling</div><div class="pc-change up">▲ $5 vs last week</div></div>
+    <div class="card"><div class="pc-label">C&F Tianjin Port</div><div class="pc-value">$571</div><div class="pc-sub">per tonne · April shipment</div><div class="pc-change dn">▼ $3 vs last week</div></div>
+    <div class="card"><div class="pc-label">China Domestic (CNY)</div><div class="pc-value">¥4,820</div><div class="pc-sub">per tonne · Yinchuan market</div><div class="pc-change up">▲ ¥30 vs last week</div></div>
+  </div>
+
+  <!-- SVG price chart -->
+  <div class="chart-placeholder">
+    <div style="font-size:12px;font-weight:600;margin-bottom:1rem;">Flaxseed FCA Kazakhstan — 12 week trend (USD/tonne)</div>
+    <svg class="chart-svg" viewBox="0 0 900 130" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="priceGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3d5a3e" stop-opacity=".18"/>
+          <stop offset="100%" stop-color="#3d5a3e" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- grid lines -->
+      <line x1="0" y1="20" x2="900" y2="20" stroke="#0f1a0f" stroke-opacity=".06" stroke-width="1"/>
+      <line x1="0" y1="55" x2="900" y2="55" stroke="#0f1a0f" stroke-opacity=".06" stroke-width="1"/>
+      <line x1="0" y1="90" x2="900" y2="90" stroke="#0f1a0f" stroke-opacity=".06" stroke-width="1"/>
+      <line x1="0" y1="125" x2="900" y2="125" stroke="#0f1a0f" stroke-opacity=".06" stroke-width="1"/>
+      <!-- price labels -->
+      <text x="4" y="18" font-size="9" fill="#0f1a0f" opacity=".4" font-family="DM Mono,monospace">$540</text>
+      <text x="4" y="53" font-size="9" fill="#0f1a0f" opacity=".4" font-family="DM Mono,monospace">$520</text>
+      <text x="4" y="88" font-size="9" fill="#0f1a0f" opacity=".4" font-family="DM Mono,monospace">$500</text>
+      <text x="4" y="123" font-size="9" fill="#0f1a0f" opacity=".4" font-family="DM Mono,monospace">$480</text>
+      <!-- area fill -->
+      <path d="M60,100 L135,95 L210,88 L285,92 L360,78 L435,70 L510,65 L585,72 L660,58 L735,45 L810,40 L885,35 L885,130 L60,130 Z" fill="url(#priceGrad)"/>
+      <!-- price line -->
+      <polyline points="60,100 135,95 210,88 285,92 360,78 435,70 510,65 585,72 660,58 735,45 810,40 885,35" fill="none" stroke="#3d5a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- current point -->
+      <circle cx="885" cy="35" r="4" fill="#3d5a3e"/>
+      <circle cx="885" cy="35" r="7" fill="#3d5a3e" opacity=".2"/>
+      <!-- week labels -->
+      <text x="55" y="128" font-size="9" fill="#0f1a0f" opacity=".35" font-family="DM Mono,monospace">W10</text>
+      <text x="280" y="128" font-size="9" fill="#0f1a0f" opacity=".35" font-family="DM Mono,monospace">W13</text>
+      <text x="505" y="128" font-size="9" fill="#0f1a0f" opacity=".35" font-family="DM Mono,monospace">W16</text>
+      <text x="730" y="128" font-size="9" fill="#0f1a0f" opacity=".35" font-family="DM Mono,monospace">W19</text>
+      <text x="862" y="128" font-size="9" fill="#3d5a3e" opacity=".8" font-family="DM Mono,monospace" font-weight="500">W21</text>
+    </svg>
+    <div class="chart-label">Source: Grain Union of Kazakhstan weekly report · APK-Inform · Data: Sep 2025–May 2026</div>
+  </div>
+
+  <!-- detailed price table -->
+  <div style="margin-top:2.5rem;">
+    <div class="eyebrow">Full Price Breakdown</div>
+    <h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:1rem;">Flaxseed (亚麻籽) HS 1204 — Brown 97% purity</h3>
+    <table class="price-table">
+      <thead><tr><th>Incoterm / Location</th><th>Price (USD/t)</th><th>Price (CNY/t)</th><th>W-o-W</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>EXW Kostanay Oblast</td><td class="mono">$488</td><td class="mono">¥3,536</td><td><span class="chg up" style="font-size:11px;">▲ $6</span></td><td style="font-size:12px;opacity:.55;">Farm gate, Kostanay region</td></tr>
+        <tr><td>EXW North Kazakhstan Oblast</td><td class="mono">$482</td><td class="mono">¥3,491</td><td><span class="chg up" style="font-size:11px;">▲ $4</span></td><td style="font-size:12px;opacity:.55;">NKO elevator ex-works</td></tr>
+        <tr><td>FCA Kazakhstan (export-ready)</td><td class="mono">$512</td><td class="mono">¥3,705</td><td><span class="chg up" style="font-size:11px;">▲ $5</span></td><td style="font-size:12px;opacity:.55;">Incl. loading, export docs</td></tr>
+        <tr><td>DAP Khorgos border</td><td class="mono">$554</td><td class="mono">¥4,011</td><td><span class="chg dn" style="font-size:11px;">▼ $2</span></td><td style="font-size:12px;opacity:.55;">Delivered KZ side, Khorgos</td></tr>
+        <tr><td>C&F Tianjin Port</td><td class="mono">$571</td><td class="mono">¥4,131</td><td><span class="chg dn" style="font-size:11px;">▼ $3</span></td><td style="font-size:12px;opacity:.55;">Cost & freight, Tianjin</td></tr>
+        <tr><td>China domestic — Yinchuan</td><td class="mono">$666</td><td class="mono">¥4,820</td><td><span class="chg up" style="font-size:11px;">▲ ¥30</span></td><td style="font-size:12px;opacity:.55;">Ningxia processor delivered</td></tr>
+        <tr><td>China domestic — Lanzhou</td><td class="mono">$655</td><td class="mono">¥4,740</td><td><span class="chg up" style="font-size:11px;">▲ ¥20</span></td><td style="font-size:12px;opacity:.55;">Gansu processor delivered</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- corridor costs -->
+  <div style="margin-top:3rem;">
+    <div class="eyebrow">Corridor Cost Build-up</div>
+    <h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:1rem;">What's inside the price — EXW to C&F Tianjin</h3>
+    <div class="corridor-grid">
+      <div class="corridor-card">
+        <div style="font-weight:600;margin-bottom:1rem;font-size:14px;">Kostanay → Tianjin route</div>
+        <div class="corridor-row"><span class="corridor-label">Elevator EXW Kostanay</span><span class="corridor-val">$488/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ Rail freight (KTZ Kostanay→Khorgos)</span><span class="corridor-val">$42/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ Export handling & phytosanitary</span><span class="corridor-val">$8/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ Port handling Khorgos</span><span class="corridor-val">$6/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ Forwarding & insurance</span><span class="corridor-val">$8/t</span></div>
+        <div class="corridor-row" style="font-weight:600;border-top:2px solid var(--border);margin-top:.25rem;padding-top:.75rem;"><span>= C&F Tianjin</span><span class="corridor-val">$552/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ China import duty (9%)</span><span class="corridor-val">$50/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">+ Port clearance Tianjin</span><span class="corridor-val">$18/t</span></div>
+        <div class="corridor-row" style="font-weight:600;color:var(--sage);"><span>= Landed Tianjin</span><span class="corridor-val">$620/t</span></div>
+      </div>
+      <div class="corridor-card">
+        <div style="font-weight:600;margin-bottom:1rem;font-size:14px;">Comparable benchmarks</div>
+        <div class="corridor-row"><span class="corridor-label">Russia FCA — to China typical C&F</span><span class="corridor-val">~$548/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">Canada C&F China (Vancouver origin)</span><span class="corridor-val">~$590/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">Kazakhstan competitive advantage</span><span class="corridor-val mono" style="color:var(--sage);">−$38/t vs CAN</span></div>
+        <div style="height:.75rem;"></div>
+        <div class="corridor-row"><span class="corridor-label">China domestic flaxseed (Yinchuan)</span><span class="corridor-val">¥4,820/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">Implied import parity price</span><span class="corridor-val">¥4,490/t</span></div>
+        <div class="corridor-row"><span class="corridor-label">China processor margin buffer</span><span class="corridor-val mono" style="color:var(--sage);">+¥330/t</span></div>
+        <div style="margin-top:1rem;padding:10px;background:var(--sage-light);border-radius:6px;font-size:12px;color:var(--sage);">
+          <strong>Processor incentive to import is positive.</strong> Chinese processors save ~¥330/t by importing vs buying domestic.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-market -->
+
+<!-- ════════════════════════════════════
+     PAGE: LISTINGS
+════════════════════════════════════ -->
+<div id="page-listings" class="page">
+<div style="background:var(--ink);color:var(--paper);padding:2rem 2.5rem;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Available Supply</div>
+    <h1 style="font-family:var(--serif);font-size:2rem;margin-bottom:.4rem;">Verified listings — elevator-backed</h1>
+    <p style="opacity:.45;font-size:13px;">Every lot backed by a warehouse receipt. Every supplier GACC-registered. Updated as inventory changes.</p>
+  </div>
+</div>
+<div class="listings-layout">
+
+  <!-- Sidebar -->
+  <div class="filter-sidebar">
+    <div class="filter-section">
+      <div class="filter-title">Product</div>
+      <label class="filter-item"><input type="checkbox" checked> 亚麻籽 Flaxseed</label>
+      <label class="filter-item"><input type="checkbox" checked> 大麦 Feed Barley</label>
+      <label class="filter-item"><input type="checkbox"> 葵花籽 Sunflower Seed</label>
+      <label class="filter-item"><input type="checkbox"> 葵花籽油 Sunflower Oil</label>
+      <label class="filter-item"><input type="checkbox"> 菜籽油 Rapeseed Oil</label>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Price range (USD/t)</div>
+      <div class="filter-range">
+        <input class="range-input" type="number" value="400" placeholder="Min">
+        <span>–</span>
+        <input class="range-input" type="number" value="600" placeholder="Max">
+      </div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Verification</div>
+      <label class="filter-item"><input type="checkbox" checked> Warehouse receipt ✓</label>
+      <label class="filter-item"><input type="checkbox" checked> GACC registered ✓</label>
+      <label class="filter-item"><input type="checkbox"> SGS lab certified</label>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Origin region</div>
+      <label class="filter-item"><input type="checkbox" checked> Kostanay Oblast</label>
+      <label class="filter-item"><input type="checkbox" checked> North Kazakhstan</label>
+      <label class="filter-item"><input type="checkbox"> Akmola Oblast</label>
+      <label class="filter-item"><input type="checkbox"> Pavlodar Oblast</label>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Delivery window</div>
+      <label class="filter-item"><input type="checkbox" checked> June 2026</label>
+      <label class="filter-item"><input type="checkbox" checked> July 2026</label>
+      <label class="filter-item"><input type="checkbox"> August 2026</label>
+      <label class="filter-item"><input type="checkbox"> Q4 2026</label>
+    </div>
+    <div style="background:var(--sage-light);border-radius:8px;padding:1rem;font-size:12px;line-height:1.65;">
+      <strong style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.6;display:block;margin-bottom:.35rem;">Price alert</strong>
+      Get notified when flaxseed FCA drops below your target.
+      <input style="width:100%;margin-top:.5rem;padding:7px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--mono);" placeholder="$500/t target price">
+      <button style="margin-top:.5rem;width:100%;background:var(--sage);color:white;border:none;padding:8px;border-radius:4px;font-size:12px;cursor:pointer;font-family:var(--sans);">Set alert</button>
+    </div>
+  </div>
+
+  <!-- Listings -->
+  <div>
+    <div class="listings-header">
+      <div class="results-count">Showing <strong>6</strong> verified lots — 6,500 tonnes available</div>
+      <select class="sort-sel"><option>Sort: Best price</option><option>Sort: Volume high</option><option>Sort: Delivery soonest</option></select>
+    </div>
+
+    <div class="listing-card card-featured">
+      <div class="lc-head">
+        <div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.5rem;"><span class="tag tag-green">✓ Warehouse Receipt</span><span class="tag tag-blue">GACC #KZ-240031</span><span class="tag" style="background:#fff3e0;color:#e65100;">SGS Certified</span></div>
+          <div class="lc-product">亚麻籽 Flaxseed — Brown 97%</div>
+          <div class="lc-origin">📍 Kostanay Oblast, North Kazakhstan</div>
+        </div>
+        <div class="lc-price-block">
+          <div class="lc-price">$512<span style="font-size:.75rem;opacity:.45;font-family:var(--sans);"> /t</span></div>
+          <div class="lc-incoterm">FCA Kostanay elevator</div>
+          <div style="font-size:11px;color:var(--sage);margin-top:3px;">↓ $36 below spot C&F</div>
+        </div>
+      </div>
+      <div class="lc-specs">
+        <div><div class="ls-k">Volume</div><div class="ls-v">1,200 t</div></div>
+        <div><div class="ls-k">Purity</div><div class="ls-v">97.3%</div></div>
+        <div><div class="ls-k">Oil content</div><div class="ls-v">42.1%</div></div>
+        <div><div class="ls-k">Moisture</div><div class="ls-v">8.2%</div></div>
+        <div><div class="ls-k">Delivery</div><div class="ls-v">Jun–Jul</div></div>
+        <div><div class="ls-k">Min. order</div><div class="ls-v">200 t</div></div>
+      </div>
+      <div class="lc-footer">
+        <div class="lc-elevator">🏭 Kostanay Grain Terminal LLC &nbsp;<span class="gacc-pill">GACC ✓</span>&nbsp;<span class="wr-pill">WR ✓</span></div>
+        <div class="lc-actions">
+          <button class="btn-inquiry">Request specs</button>
+          <button class="btn-sm">Place bid →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="lc-head">
+        <div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.5rem;"><span class="tag tag-green">✓ Warehouse Receipt</span><span class="tag tag-blue">GACC #KZ-240018</span></div>
+          <div class="lc-product">亚麻籽 Flaxseed — Brown 97%</div>
+          <div class="lc-origin">📍 North Kazakhstan Oblast (Petropavlovsk region)</div>
+        </div>
+        <div class="lc-price-block">
+          <div class="lc-price">$508<span style="font-size:.75rem;opacity:.45;font-family:var(--sans);"> /t</span></div>
+          <div class="lc-incoterm">FCA NKO elevator</div>
+        </div>
+      </div>
+      <div class="lc-specs">
+        <div><div class="ls-k">Volume</div><div class="ls-v">800 t</div></div>
+        <div><div class="ls-k">Purity</div><div class="ls-v">97.1%</div></div>
+        <div><div class="ls-k">Oil content</div><div class="ls-v">41.8%</div></div>
+        <div><div class="ls-k">Moisture</div><div class="ls-v">8.6%</div></div>
+        <div><div class="ls-k">Delivery</div><div class="ls-v">Jul 2026</div></div>
+        <div><div class="ls-k">Min. order</div><div class="ls-v">200 t</div></div>
+      </div>
+      <div class="lc-footer">
+        <div class="lc-elevator">🏭 Petropavlovsk Agro Elevator &nbsp;<span class="gacc-pill">GACC ✓</span>&nbsp;<span class="wr-pill">WR ✓</span></div>
+        <div class="lc-actions"><button class="btn-inquiry">Request specs</button><button class="btn-sm">Place bid →</button></div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="lc-head">
+        <div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.5rem;"><span class="tag tag-green">✓ Warehouse Receipt</span><span class="tag tag-blue">GACC #KZ-240044</span></div>
+          <div class="lc-product">亚麻籽 Flaxseed — Brown 97%</div>
+          <div class="lc-origin">📍 Kostanay Oblast (new season stock)</div>
+        </div>
+        <div class="lc-price-block">
+          <div class="lc-price">$495<span style="font-size:.75rem;opacity:.45;font-family:var(--sans);"> /t</span></div>
+          <div class="lc-incoterm">FCA Kostanay elevator</div>
+          <div style="font-size:11px;color:var(--amber);margin-top:3px;">⚡ Price negotiable for 500t+</div>
+        </div>
+      </div>
+      <div class="lc-specs">
+        <div><div class="ls-k">Volume</div><div class="ls-v">2,400 t</div></div>
+        <div><div class="ls-k">Purity</div><div class="ls-v">96.8%</div></div>
+        <div><div class="ls-k">Oil content</div><div class="ls-v">41.5%</div></div>
+        <div><div class="ls-k">Moisture</div><div class="ls-v">9.0%</div></div>
+        <div><div class="ls-k">Delivery</div><div class="ls-v">Aug 2026</div></div>
+        <div><div class="ls-k">Min. order</div><div class="ls-v">500 t</div></div>
+      </div>
+      <div class="lc-footer">
+        <div class="lc-elevator">🏭 Rudny Agro Terminal &nbsp;<span class="gacc-pill">GACC ✓</span>&nbsp;<span class="wr-pill">WR ✓</span></div>
+        <div class="lc-actions"><button class="btn-inquiry">Request specs</button><button class="btn-sm">Place bid →</button></div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="lc-head">
+        <div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.5rem;"><span class="tag tag-green">✓ Warehouse Receipt</span><span class="tag tag-blue">GACC #KZ-230089</span></div>
+          <div class="lc-product">大麦 Feed Barley — Grade 2</div>
+          <div class="lc-origin">📍 Akmola Oblast (Astana region)</div>
+        </div>
+        <div class="lc-price-block">
+          <div class="lc-price">$152<span style="font-size:.75rem;opacity:.45;font-family:var(--sans);"> /t</span></div>
+          <div class="lc-incoterm">FCA Akmola elevator</div>
+        </div>
+      </div>
+      <div class="lc-specs">
+        <div><div class="ls-k">Volume</div><div class="ls-v">3,000 t</div></div>
+        <div><div class="ls-k">Protein</div><div class="ls-v">11.5%</div></div>
+        <div><div class="ls-k">Moisture</div><div class="ls-v">13.1%</div></div>
+        <div><div class="ls-k">Falling #</div><div class="ls-v">280s</div></div>
+        <div><div class="ls-k">Delivery</div><div class="ls-v">Jun 2026</div></div>
+        <div><div class="ls-k">Min. order</div><div class="ls-v">500 t</div></div>
+      </div>
+      <div class="lc-footer">
+        <div class="lc-elevator">🏭 Astana Grain Hub JSC &nbsp;<span class="gacc-pill">GACC ✓</span>&nbsp;<span class="wr-pill">WR ✓</span></div>
+        <div class="lc-actions"><button class="btn-inquiry">Request specs</button><button class="btn-sm">Place bid →</button></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /page-listings -->
+
+<!-- ════════════════════════════════════
+     PAGE: LOGISTICS
+════════════════════════════════════ -->
+<div id="page-logistics" class="page">
+<div class="route-hero">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Logistics</div>
+    <h1 style="font-family:var(--serif);font-size:2.5rem;margin-bottom:.5rem;">Kazakhstan → China rail corridors</h1>
+    <p style="opacity:.45;font-size:14px;max-width:540px;">Two operational border crossings. Verified KTZ freight rates. Typical transit times, gauge-change protocols, and customs clearance — all in one view.</p>
+
+    <!-- SVG route map -->
+    <div class="route-map">
+      <svg class="route-svg" viewBox="0 0 860 200" preserveAspectRatio="xMidYMid meet">
+        <!-- background dots grid -->
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1" fill="rgba(247,244,238,.12)"/>
+        </pattern>
+        <rect width="860" height="200" fill="url(#dots)"/>
+
+        <!-- Route lines -->
+        <!-- Kostanay → Khorgos -->
+        <line x1="160" y1="70" x2="560" y2="110" stroke="#8aab8b" stroke-width="2.5" stroke-dasharray="8,4"/>
+        <!-- NKO → Dostyk -->
+        <line x1="190" y1="90" x2="520" y2="130" stroke="#8aab8b" stroke-width="2" stroke-dasharray="6,5" opacity=".7"/>
+        <!-- Khorgos → Yinchuan -->
+        <line x1="560" y1="110" x2="730" y2="95" stroke="#c8721a" stroke-width="2.5"/>
+        <!-- Dostyk → Urumqi -->
+        <line x1="520" y1="130" x2="680" y2="140" stroke="#c8721a" stroke-width="2" opacity=".7"/>
+
+        <!-- Cities -->
+        <circle cx="155" cy="68" r="7" fill="#3d5a3e"/><text x="155" y="54" text-anchor="middle" fill="white" font-size="9" font-family="DM Sans,sans-serif" font-weight="500">KOSTANAY</text>
+        <circle cx="185" cy="92" r="5" fill="#3d5a3e" opacity=".8"/><text x="185" y="78" text-anchor="middle" fill="rgba(247,244,238,.7)" font-size="8" font-family="DM Sans,sans-serif">NKO</text>
+        <circle cx="80" cy="130" r="5" fill="#3d5a3e" opacity=".6"/><text x="80" y="116" text-anchor="middle" fill="rgba(247,244,238,.6)" font-size="8" font-family="DM Sans,sans-serif">ALMATY</text>
+        <circle cx="555" cy="110" r="8" fill="#f7f4ee"/><text x="555" y="97" text-anchor="middle" fill="white" font-size="9" font-family="DM Sans,sans-serif" font-weight="600">KHORGOS</text>
+        <text x="555" y="128" text-anchor="middle" fill="rgba(247,244,238,.5)" font-size="7" font-family="DM Mono,monospace">Border</text>
+        <circle cx="518" cy="131" r="6" fill="rgba(247,244,238,.6)"/><text x="518" y="148" text-anchor="middle" fill="rgba(247,244,238,.5)" font-size="7" font-family="DM Sans,sans-serif">DOSTYK</text>
+        <circle cx="728" cy="94" r="7" fill="#c8721a"/><text x="728" y="80" text-anchor="middle" fill="white" font-size="9" font-family="DM Sans,sans-serif" font-weight="500">YINCHUAN</text>
+        <circle cx="678" cy="141" r="5" fill="#c8721a" opacity=".8"/><text x="678" y="157" text-anchor="middle" fill="rgba(247,244,238,.6)" font-size="8" font-family="DM Sans,sans-serif">URUMQI</text>
+        <circle cx="800" cy="120" r="5" fill="#c8721a" opacity=".5"/><text x="800" y="136" text-anchor="middle" fill="rgba(247,244,238,.4)" font-size="8" font-family="DM Sans,sans-serif">TIANJIN</text>
+
+        <!-- Legend -->
+        <line x1="20" y1="180" x2="40" y2="180" stroke="#8aab8b" stroke-width="2" stroke-dasharray="6,3"/><text x="46" y="184" fill="rgba(247,244,238,.5)" font-size="9" font-family="DM Sans,sans-serif">KZ rail (KTZ)</text>
+        <line x1="160" y1="180" x2="180" y2="180" stroke="#c8721a" stroke-width="2"/><text x="186" y="184" fill="rgba(247,244,238,.5)" font-size="9" font-family="DM Sans,sans-serif">China rail (CR)</text>
+        <circle cx="310" cy="180" r="4" fill="white"/><text x="320" y="184" fill="rgba(247,244,238,.5)" font-size="9" font-family="DM Sans,sans-serif">Border crossing</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div style="padding:2.5rem;max-width:1200px;margin:0 auto;">
+  <div class="eyebrow">Route Options</div>
+  <h2 class="sec">Two corridors, different trade-offs</h2>
+  <div class="route-grid">
+    <div class="route-card recommended">
+      <div class="rec-badge">RECOMMENDED</div>
+      <div class="route-name">Khorgos–Altynkol</div>
+      <div class="route-path">Kostanay/NKO → Almaty → Khorgos → Yinchuan/Lanzhou</div>
+      <div class="route-stat-grid">
+        <div><div class="rs-k">Rail transit</div><div class="rs-v">12–16 days</div></div>
+        <div><div class="rs-k">KTZ freight</div><div class="rs-v">$38–46/t</div></div>
+        <div><div class="rs-k">Gauge change</div><div class="rs-v">At Khorgos</div></div>
+        <div><div class="rs-k">Customs</div><div class="rs-v">1–3 hrs (green lane)</div></div>
+        <div><div class="rs-k">2024 volume</div><div class="rs-v">14M tonnes</div></div>
+        <div><div class="rs-k">Congestion</div><div class="rs-v">Low–medium</div></div>
+      </div>
+      <div style="font-size:12px;background:var(--sage-light);padding:8px 12px;border-radius:6px;color:var(--sage);">✓ Agricultural green channel — 1-hour clearance for food-grade commodities</div>
+    </div>
+    <div class="route-card">
+      <div class="route-name">Dostyk–Alashankou</div>
+      <div class="route-path">NKO → Aktobe → Dostyk → Urumqi/Lanzhou</div>
+      <div class="route-stat-grid">
+        <div><div class="rs-k">Rail transit</div><div class="rs-v">14–20 days</div></div>
+        <div><div class="rs-k">KTZ freight</div><div class="rs-v">$36–42/t</div></div>
+        <div><div class="rs-k">Gauge change</div><div class="rs-v">At Dostyk</div></div>
+        <div><div class="rs-k">Customs</div><div class="rs-v">4–12 hrs</div></div>
+        <div><div class="rs-k">2024 volume</div><div class="rs-v">18M tonnes</div></div>
+        <div><div class="rs-k">Congestion</div><div class="rs-v">High at peak</div></div>
+      </div>
+      <div style="font-size:12px;background:var(--amber-light);padding:8px 12px;border-radius:6px;color:var(--amber);">⚠ Congestion risk Sep–Nov (harvest peak). Book wagons 60–90 days ahead.</div>
+    </div>
+    <div class="route-card">
+      <div class="route-name">Truck via Khorgos Highway</div>
+      <div class="route-path">Any KZ origin → Khorgos highway port → Yinchuan</div>
+      <div class="route-stat-grid">
+        <div><div class="rs-k">Transit time</div><div class="rs-v">3–5 days</div></div>
+        <div><div class="rs-k">Freight</div><div class="rs-v">$55–75/t</div></div>
+        <div><div class="rs-k">Gauge change</div><div class="rs-v">None needed</div></div>
+        <div><div class="rs-k">Customs</div><div class="rs-v">~1 hour</div></div>
+        <div><div class="rs-k">Container</div><div class="rs-v">25–28 t/truck</div></div>
+        <div><div class="rs-k">Best for</div><div class="rs-v">Urgent / small</div></div>
+      </div>
+      <div style="font-size:12px;background:var(--blue-light);padding:8px 12px;border-radius:6px;color:var(--blue);">Best for urgent shipments under 200 tonnes or time-sensitive quality-critical cargo.</div>
+    </div>
+  </div>
+
+  <!-- Freight Calculator -->
+  <div style="margin-top:3rem;">
+    <div class="eyebrow">Freight Calculator</div>
+    <h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:1.25rem;">Calculate your landed freight cost</h3>
+    <div class="freight-calc">
+      <div class="fc-grid">
+        <div>
+          <div class="fc-label">Origin region</div>
+          <select class="fc-input" id="fc-origin" onchange="calcFreight()">
+            <option value="42">Kostanay Oblast</option>
+            <option value="38">North Kazakhstan Oblast</option>
+            <option value="46">Akmola Oblast</option>
+            <option value="52">Almaty Oblast</option>
+          </select>
+        </div>
+        <div>
+          <div class="fc-label">Destination</div>
+          <select class="fc-input" id="fc-dest" onchange="calcFreight()">
+            <option value="8">Yinchuan, Ningxia</option>
+            <option value="15">Lanzhou, Gansu</option>
+            <option value="22">Tianjin Port</option>
+            <option value="18">Urumqi, Xinjiang</option>
+          </select>
+        </div>
+        <div>
+          <div class="fc-label">Quantity (tonnes)</div>
+          <input class="fc-input" type="number" id="fc-qty" value="500" oninput="calcFreight()">
+        </div>
+      </div>
+      <div class="fc-result">
+        <div class="fcr-row"><span style="opacity:.55;">Rail freight (KTZ)</span><span id="fc-rail" class="mono">$42/t</span></div>
+        <div class="fcr-row"><span style="opacity:.55;">Khorgos/Dostyk handling</span><span class="mono">$6/t</span></div>
+        <div class="fcr-row"><span style="opacity:.55;">China-side rail (CR)</span><span id="fc-cr" class="mono">$8/t</span></div>
+        <div class="fcr-row"><span style="opacity:.55;">Gauge-change bogie swap</span><span class="mono">$4/t</span></div>
+        <div class="fcr-row"><span style="opacity:.55;">Insurance (0.2% cargo value)</span><span class="mono">~$1/t</span></div>
+        <div class="fcr-total"><span style="font-weight:600;">Total freight / tonne</span><span class="fcr-total-val" id="fc-total">$61/t</span></div>
+        <div style="margin-top:.75rem;font-size:11px;opacity:.4;">For 500 tonnes: <span id="fc-batch" class="mono">$30,500 total freight</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shipment timeline -->
+  <div class="timeline-section" style="padding:2.5rem 0;">
+    <div class="eyebrow">Typical Shipment Timeline</div>
+    <h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:1.5rem;">Kostanay elevator → Yinchuan processor</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-day">DAY 0</div><div class="tl-event">Contract signed & warehouse receipt pledged</div><div class="tl-detail">SilkRoad Agri confirms lot allocation. Buyer LC opened at CCB Astana. Elevator instructed to earmark stock.</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-day">DAY 1–3</div><div class="tl-event">Pre-shipment quality inspection</div><div class="tl-detail">SGS inspector takes samples at elevator. Tests: purity, oil content, moisture, mycotoxins, pesticide residues. Bilingual QR certificate issued.</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-day">DAY 3–5</div><div class="tl-event">KTZ wagon allocation & loading</div><div class="tl-detail">Kazakhstan Temir Zholy allocates covered grain wagons. Phytosanitary certificate issued by KZ Ministry of Agriculture. Goods loaded.</div></div>
+      <div class="tl-item"><div class="tl-dot current"></div><div class="tl-day">DAY 5–7</div><div class="tl-event">Customs export declaration filed</div><div class="tl-detail">GTD (customs declaration) filed with KZ Customs. 0% export VAT confirmed. Documents package prepared: contract, invoice, bill of lading, phytosanitary cert, quality cert, PoO.</div></div>
+      <div class="tl-item"><div class="tl-dot todo"></div><div class="tl-day">DAY 7–14</div><div class="tl-event">Rail transit: Kostanay → Khorgos border</div><div class="tl-detail">~1,800 km rail journey. KTZ network to Almaty junction, then south-east to Khorgos. Real-time tracking provided via platform.</div></div>
+      <div class="tl-item"><div class="tl-dot todo"></div><div class="tl-day">DAY 14–15</div><div class="tl-event">Khorgos border crossing & gauge change</div><div class="tl-detail">Bogie swap from 1520mm to 1435mm gauge. Agricultural green channel: GACC inspection typically 1–3 hours. Documents checked against GACC registration.</div></div>
+      <div class="tl-item"><div class="tl-dot todo"></div><div class="tl-day">DAY 15–18</div><div class="tl-event">China-side rail: Khorgos → Yinchuan</div><div class="tl-detail">~900 km on China Railway network to Yinchuan, Ningxia. Buyer notified of ETA 48 hours in advance.</div></div>
+      <div class="tl-item"><div class="tl-dot todo"></div><div class="tl-day">DAY 18–20</div><div class="tl-event">Delivery, discharge & final settlement</div><div class="tl-detail">Goods unloaded at buyer's designated facility. Outturn survey confirms quantity. LC documents presented by SilkRoad Agri to CCB. Settlement within 3–5 banking days.</div></div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-logistics -->
+
+<!-- ════════════════════════════════════
+     PAGE: FINANCE
+════════════════════════════════════ -->
+<div id="page-finance" class="page">
+<div class="finance-hero">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Trade Finance</div>
+    <h1 style="font-family:var(--serif);font-size:2.5rem;margin-bottom:.5rem;">Solving the payment deadlock</h1>
+    <p style="opacity:.45;font-size:14px;max-width:580px;">Kazakh sellers need cash before shipment. Chinese buyers won't prepay. Documentary LC via CCB Astana — the first Chinese bank licensed at AIFC — bridges both sides cleanly.</p>
+    <div style="display:flex;gap:2rem;margin-top:1.75rem;">
+      <div style="border:1px solid rgba(247,244,238,.15);border-radius:8px;padding:.85rem 1.25rem;"><div style="font-size:11px;opacity:.35;margin-bottom:.25rem;">CCB Astana status</div><div style="font-size:14px;font-weight:500;">AIFC-licensed · Banking operational</div></div>
+      <div style="border:1px solid rgba(247,244,238,.15);border-radius:8px;padding:.85rem 1.25rem;"><div style="font-size:11px;opacity:.35;margin-bottom:.25rem;">Financing structure</div><div style="font-size:14px;font-weight:500;">Back-to-back documentary LC</div></div>
+      <div style="border:1px solid rgba(247,244,238,.15);border-radius:8px;padding:.85rem 1.25rem;"><div style="font-size:11px;opacity:.35;margin-bottom:.25rem;">Pre-shipment advance</div><div style="font-size:14px;font-weight:500;">70–85% of LC face value</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="finance-grid">
+  <!-- LC flow -->
+  <div>
+    <div class="eyebrow">How it works</div>
+    <h2 class="sec" style="font-size:1.75rem;">The Back-to-Back LC structure</h2>
+    <div class="flow-diagram">
+      <div class="flow-title">Transaction flow — single batch</div>
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div><div class="flow-content-title">Chinese buyer opens LC at CCB China</div><div class="flow-content-sub">Buyer's bank (ICBC, BOC, CCB China) issues irrevocable Documentary LC naming SilkRoad Agri AIFC as beneficiary. CCB Astana is instructed as advising/confirming bank.</div><div class="lc-step-timing">Day 0 — Typical: 3–5 business days to issue</div></div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div><div class="flow-content-title">CCB Astana confirms LC to SilkRoad Agri</div><div class="flow-content-sub">CCB Astana advises and confirms the LC — taking on the Chinese bank's payment risk. SilkRoad Agri now holds a confirmed, irrevocable LC as collateral.</div><div class="lc-step-timing">Day 3–5</div></div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div><div class="flow-content-title">CCB Astana pre-finances SilkRoad Agri</div><div class="flow-content-sub">SilkRoad Agri pledges confirmed LC to CCB Astana and draws 70–85% of LC face value as a short-term pre-shipment loan. Funds used to pay Kazakh elevator in cash.</div><div class="lc-step-timing">Day 5–7 · Rate: SOFR + ~250bps</div></div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div><div class="flow-content-title">Elevator receives cash payment</div><div class="flow-content-sub">Kazakh elevator receives TT bank transfer. No LC required from elevator side. Goods loaded, phytosanitary cert and quality cert issued. Shipment departs.</div><div class="lc-step-timing">Day 7–14 · Shipment in transit</div></div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div><div class="flow-content-title">Documents presented → LC paid → loan repaid</div><div class="flow-content-sub">SilkRoad Agri presents compliant documents to CCB Astana. CCB forwards to issuing bank in China. Payment received. CCB pre-shipment loan repaid. Net trading margin retained.</div><div class="lc-step-timing">Day 18–25 · Full settlement</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column -->
+  <div>
+    <div class="eyebrow">Services</div>
+    <h2 class="sec" style="font-size:1.75rem;">Finance products available</h2>
+    <div class="finance-cards">
+      <div class="fin-card"><div class="fin-card-icon">📄</div><div class="fin-card-title">Documentary LC</div><div class="fin-card-desc">Irrevocable, confirmed documentary letters of credit via CCB Astana. UCP 600 compliant. Available for Tier 1–2 Chinese banks.</div></div>
+      <div class="fin-card"><div class="fin-card-icon">⚡</div><div class="fin-card-title">Pre-shipment Finance</div><div class="fin-card-desc">Draw 70–85% of LC value before shipment. Repaid automatically on LC settlement. Rate: SOFR + 200–300bps.</div></div>
+      <div class="fin-card"><div class="fin-card-icon">🏦</div><div class="fin-card-title">Warehouse Receipt Loans</div><div class="fin-card-desc">Sellers can borrow against warehouse receipts at 60–70% of commodity value through partner KZ commercial banks.</div></div>
+      <div class="fin-card"><div class="fin-card-icon">🛡</div><div class="fin-card-title">Cargo Insurance</div><div class="fin-card-desc">Marine cargo insurance covering rail transit, GACC rejection risk, and quality shortfall. Arranged through Lloyd's-accredited brokers.</div></div>
+    </div>
+
+    <!-- LC requirements guide -->
+    <div class="lc-guide" style="margin-top:1.5rem;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:1.25rem;">LC document checklist — what buyers must provide</div>
+      <div class="lc-step-row"><div class="lc-step-num">01</div><div class="lc-step-body"><div class="lc-step-title">Commercial invoice</div><div class="lc-step-desc">In English and Chinese. Must match LC amount ±2%.</div></div></div>
+      <div class="lc-step-row"><div class="lc-step-num">02</div><div class="lc-step-body"><div class="lc-step-title">International railway bill (SMGS)</div><div class="lc-step-desc">Original SMGS rail bill of lading, showing goods loaded at KZ origin station, consigned to Chinese destination.</div></div></div>
+      <div class="lc-step-row"><div class="lc-step-num">03</div><div class="lc-step-body"><div class="lc-step-title">Phytosanitary certificate</div><div class="lc-step-desc">Issued by KZ Ministry of Agriculture. Valid 21 days from issue date.</div></div></div>
+      <div class="lc-step-row"><div class="lc-step-num">04</div><div class="lc-step-body"><div class="lc-step-title">Quality certificate (SGS/BV)</div><div class="lc-step-desc">Third-party lab report: purity, oil content, moisture, mycotoxins. Bilingual with QR code.</div></div></div>
+      <div class="lc-step-row"><div class="lc-step-num">05</div><div class="lc-step-body"><div class="lc-step-title">Certificate of origin (Form CT-KZ)</div><div class="lc-step-desc">Issued by KZ Chamber of Commerce. Confirms 100% Kazakhstan origin. Required for preferential duty rate.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- VAT section -->
+<div style="padding:0 2.5rem 3rem;max-width:1200px;margin:0 auto;">
+  <div class="vat-section">
+    <div class="eyebrow">Kazakhstan VAT — know before you trade</div>
+    <h3 style="font-family:var(--serif);font-size:1.5rem;margin-bottom:.4rem;">Export VAT refund — 2026 rules</h3>
+    <p style="opacity:.6;font-size:13px;margin-bottom:1.5rem;">Export at 0% VAT rate. Recover input VAT paid on purchase. Rules changed materially in 2026 — structure your supply chain accordingly.</p>
+    <div class="vat-grid">
+      <div class="vat-card">
+        <div class="vat-scenario">✅ Optimal: Buy from registered elevator (TOO/АО)</div>
+        <div class="vat-row"><span class="vat-key">Purchase from</span><span class="vat-val">Elevator company (VAT-registered)</span></div>
+        <div class="vat-row"><span class="vat-key">Input VAT paid</span><span class="vat-val">16% on purchase price</span></div>
+        <div class="vat-row"><span class="vat-key">VAT refundable</span><span class="vat-val vat-highlight">100% — standard rules apply</span></div>
+        <div class="vat-row"><span class="vat-key">Refund timeline (fast track)</span><span class="vat-val vat-highlight">15 working days</span></div>
+        <div class="vat-row"><span class="vat-key">Net VAT cost</span><span class="vat-val vat-highlight">$0 / tonne</span></div>
+      </div>
+      <div class="vat-card">
+        <div class="vat-scenario">⚠️ Avoid: Buy direct from farmer (СХТП)</div>
+        <div class="vat-row"><span class="vat-key">Purchase from</span><span class="vat-val">Agricultural producer (farmer)</span></div>
+        <div class="vat-row"><span class="vat-key">Input VAT paid</span><span class="vat-val">16% on purchase price</span></div>
+        <div class="vat-row"><span class="vat-key">VAT refundable</span><span class="vat-val vat-warn">Only 20% — Art. 484(2)(7) NKK</span></div>
+        <div class="vat-row"><span class="vat-key">Net unrecoverable VAT</span><span class="vat-val vat-warn">12.8% of purchase price</span></div>
+        <div class="vat-row"><span class="vat-key">Cost impact at $488/t EXW</span><span class="vat-val vat-warn">~$62.5/t extra burden</span></div>
+      </div>
+    </div>
+    <div style="margin-top:1.25rem;font-size:12px;opacity:.55;font-style:italic;">All transactions on SilkRoad Agri are structured through VAT-registered elevator companies to ensure full input VAT recoverability. Consult a KZ-licensed tax advisor before trading.</div>
+  </div>
+</div>
+
+</div><!-- /page-finance -->
+
+<!-- ════════════════════════════════════
+     PAGE: ABOUT
+════════════════════════════════════ -->
+<div id="page-about" class="page">
+
+<div class="about-hero">
+  <div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:.75rem;">Our Mission</div>
+    <h1 class="about-mission">Making the Kazakhstan–China corridor <em>work</em> for everyone on it</h1>
+    <p class="about-body">Today, over $1.05 billion in agricultural commodities moves from Kazakhstan to China every year — and almost none of it transacts on a transparent, verified platform. Prices are negotiated in private. Supply claims can't be verified. Payment requires impossible trust between strangers.</p>
+    <p class="about-body">SilkRoad Agri is building the infrastructure layer this corridor has needed for a decade: warehouse-receipt-backed listings, weekly price indices, integrated LC finance through CCB Astana, and GACC-compliant quality certification — all in one place.</p>
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+      <button class="btn-lg" onclick="showPage('listings')">See the platform →</button>
+      <button class="btn-outline">Download pitch deck</button>
+    </div>
+  </div>
+  <div>
+    <div style="background:var(--ink);color:var(--paper);border-radius:12px;padding:2rem;">
+      <div style="font-size:12px;opacity:.35;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.25rem;">Market opportunity</div>
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid rgba(247,244,238,.08);">
+        <div style="font-family:var(--mono);font-size:2rem;font-weight:500;">$1.43B</div>
+        <div style="font-size:13px;opacity:.45;margin-top:3px;">KZ agricultural exports to China 2025 — up 35% YoY</div>
+      </div>
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid rgba(247,244,238,.08);">
+        <div style="font-family:var(--mono);font-size:2rem;font-weight:500;">+82%</div>
+        <div style="font-size:13px;opacity:.45;margin-top:3px;">Q1 2026 growth — fastest expanding corridor in Central Asia</div>
+      </div>
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid rgba(247,244,238,.08);">
+        <div style="font-family:var(--mono);font-size:2rem;font-weight:500;">$0</div>
+        <div style="font-size:13px;opacity:.45;margin-top:3px;">Existing verified, GACC-compliant platforms on this corridor</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:2rem;font-weight:500;color:var(--sage-mid);">0.3–0.5%</div>
+        <div style="font-size:13px;opacity:.45;margin-top:3px;">Platform fee on GMV — at $500M GMV target: $1.5–2.5M revenue</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Timeline -->
+<div class="about-timeline">
+  <div class="atl-inner">
+    <div class="eyebrow">Milestones</div>
+    <h2 class="sec">How we got here</h2>
+    <div class="atl-grid">
+      <div class="atl-card"><div class="atl-date">2022–2024</div><div class="atl-event">3 years on the ground in Kazakhstan. Government relationships. Agri sector network built.</div></div>
+      <div class="atl-card"><div class="atl-date">Q1 2026</div><div class="atl-event">Platform concept validated. First elevator partnerships in Kostanay and NKO initiated.</div></div>
+      <div class="atl-card"><div class="atl-date">Q2 2026</div><div class="atl-event">Demo platform launched. CCB Astana introductions made. Chinese buyer LOIs in progress.</div></div>
+      <div class="atl-card"><div class="atl-date">Q3 2026 (target)</div><div class="atl-event">AIFC company incorporated. First pilot transaction completed. Seed funding round.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Team -->
+<div style="padding:4rem 2.5rem;max-width:1200px;margin:0 auto;">
+  <div class="eyebrow">Team</div>
+  <h2 class="sec">People who've done this before</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">SA</div>
+      <div class="team-name">Founder · CEO</div>
+      <div class="team-role">Kazakhstan Operations · China Trade</div>
+      <div class="team-bio">3+ years on the ground in Kazakhstan. Deep government and agri-sector relationships. Expertise in China–Central Asia agricultural trade flows and AIFC regulatory framework.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">TF</div>
+      <div class="team-name">Trade Finance Lead</div>
+      <div class="team-role">CCB · Documentary LC Specialist</div>
+      <div class="team-bio">10+ years in trade finance at Chinese state banks. Specialist in Back-to-Back LC structures for Central Asia commodity corridors. Based Astana/Shanghai.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">MK</div>
+      <div class="team-name">Logistics & Supply Chain</div>
+      <div class="team-role">KTZ · Khorgos Corridor Expert</div>
+      <div class="team-bio">Former KTZ freight specialist. 8 years managing agricultural cargo on the Khorgos–Altynkol corridor. Warehouse receipt and elevator network expertise.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Investor section -->
+<div class="investors-section">
+  <div class="inv-inner">
+    <div style="font-size:11px;opacity:.35;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem;">Investment Opportunity</div>
+    <h2 style="font-family:var(--serif);font-size:2.2rem;margin-bottom:.5rem;">Seed round — Q3 2026</h2>
+    <p style="opacity:.45;font-size:14px;max-width:540px;margin-bottom:0;">We are raising a seed round to incorporate at AIFC, complete our first 3 pilot transactions, and build the technology infrastructure for scale.</p>
+    <div class="inv-grid">
+      <div class="inv-card">
+        <div class="inv-icon">🎯</div>
+        <div class="inv-type">Use of funds</div>
+        <div class="inv-title">AIFC incorporation + first transactions</div>
+        <div class="inv-desc">Legal setup ($30K), 3 pilot transactions as Principal ($150K working capital), tech platform build ($50K), compliance & team ($70K). Target: $300K seed.</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">📈</div>
+        <div class="inv-type">Revenue model</div>
+        <div class="inv-title">Transaction fee + data subscriptions</div>
+        <div class="inv-desc">0.3–0.5% platform fee on GMV. Weekly price data subscription for traders/funds ($500/mo). Quality certification service ($100–150/lot). Year 2 target: $500K ARR.</div>
+      </div>
+      <div class="inv-card">
+        <div class="inv-icon">🌏</div>
+        <div class="inv-type">Strategic fit</div>
+        <div class="inv-title">Belt & Road + AIFC alignment</div>
+        <div class="inv-desc">KZ–China governments formally agreed to build a joint grain trading platform (May 2026). SilkRoad Agri is the private-sector implementation of that vision. Ideal for BRI-aligned institutional investors.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pitch-cta">
+  <h2>Ready to discuss?</h2>
+  <p>We're meeting with potential investors, Chinese buyers, and Kazakh elevator operators. If you're interested in the Kazakhstan–China agricultural corridor, let's talk.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;">
+    <button class="btn-lg">Request pitch deck →</button>
+    <button class="btn-outline">Schedule a call</button>
+  </div>
+  <div style="margin-top:1.5rem;font-size:12px;opacity:.4;">contact@silkroadagri.com · AIFC, Astana, Kazakhstan</div>
+</div>
+
+</div><!-- /page-about -->
+
+<!-- ═══ SHARED FOOTER ═══ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">SilkRoad<span>Agri</span></div>
+      <div class="footer-tag">Verified commodity exchange for the Kazakhstan–China agricultural corridor. AIFC-registered. Belt and Road aligned.</div>
+    </div>
+    <div>
+      <div class="footer-col-h">Platform</div>
+      <ul class="footer-links">
+        <li onclick="showPage('market')">Market prices</li>
+        <li onclick="showPage('listings')">Supply listings</li>
+        <li onclick="showPage('logistics')">Logistics</li>
+        <li onclick="showPage('finance')">Trade finance</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-h">Company</div>
+      <ul class="footer-links">
+        <li onclick="showPage('about')">About us</li>
+        <li onclick="showPage('about')">Investors</li>
+        <li>AIFC registration</li>
+        <li>Contact</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-h">Data sources</div>
+      <ul class="footer-links">
+        <li>Grain Union Kazakhstan</li>
+        <li>APK-Inform</li>
+        <li>China GACC</li>
+        <li>KTZ freight schedule</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 SilkRoad Agri Ltd. AIFC-registered entity in formation. Prices are reference data only — not financial advice.</div>
+    <div>Astana, Kazakhstan · contact@silkroadagri.com</div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════
+     PAGE: DASHBOARD (Member Area)
+════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+<div class="dash-layout">
+
+  <!-- Sidebar -->
+  <div class="dash-sidebar">
+    <div style="padding:0 1.5rem 1.25rem;border-bottom:1px solid rgba(247,244,238,.08);">
+      <div style="font-size:13px;font-weight:500;">厦门国贸集团</div>
+      <div style="font-size:11px;opacity:.35;margin-top:2px;">Buyer · Verified · Since May 2026</div>
+    </div>
+    <div class="dash-nav-section">Trading</div>
+    <div class="dash-nav-item active" onclick="showDash('overview')"><span class="dash-nav-icon">📊</span> Overview</div>
+    <div class="dash-nav-item" onclick="showDash('bids')"><span class="dash-nav-icon">💬</span> My Bids</div>
+    <div class="dash-nav-item" onclick="showDash('orders')"><span class="dash-nav-icon">📦</span> Active Orders</div>
+    <div class="dash-nav-item" onclick="showDash('history')"><span class="dash-nav-icon">✅</span> Trade History</div>
+    <div class="dash-nav-section">Finance</div>
+    <div class="dash-nav-item" onclick="showDash('lc')"><span class="dash-nav-icon">🏦</span> LC Management</div>
+    <div class="dash-nav-item" onclick="showDash('invoices')"><span class="dash-nav-icon">🧾</span> Invoices & Docs</div>
+    <div class="dash-nav-section">Tools</div>
+    <div class="dash-nav-item" onclick="showPage('market')"><span class="dash-nav-icon">📈</span> Price Index</div>
+    <div class="dash-nav-item" onclick="showPage('listings')"><span class="dash-nav-icon">🔍</span> Browse Supply</div>
+    <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1.5rem;">
+      <div style="font-size:11px;opacity:.25;line-height:1.6;">SilkRoad Agri Demo<br>AIFC entity in formation</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="dash-main">
+
+    <!-- Overview panel -->
+    <div id="dash-overview">
+      <div class="dash-header">
+        <div>
+          <div class="dash-title">Good afternoon, 国贸团队</div>
+          <div style="font-size:13px;opacity:.45;margin-top:3px;">Week 21 · 22 May 2026 · Flaxseed FCA $512/t ▲0.9%</div>
+        </div>
+        <button class="btn-sm" onclick="openBidModal()">+ New bid</button>
+      </div>
+
+      <div class="dash-stat-grid">
+        <div class="ds-card">
+          <div class="ds-label">Open bids</div>
+          <div class="ds-value">2</div>
+          <div class="ds-sub">Flaxseed, Barley</div>
+          <div class="ds-trend up">Active</div>
+        </div>
+        <div class="ds-card">
+          <div class="ds-label">In transit</div>
+          <div class="ds-value">1</div>
+          <div class="ds-sub">500t Flaxseed</div>
+          <div class="ds-trend" style="background:#fff3e0;color:#e65100;">Day 11/18</div>
+        </div>
+        <div class="ds-card">
+          <div class="ds-label">LC utilised</div>
+          <div class="ds-value">$242K</div>
+          <div class="ds-sub">of $500K facility</div>
+          <div class="ds-trend" style="background:var(--sage-light);color:var(--sage);">48% used</div>
+        </div>
+        <div class="ds-card">
+          <div class="ds-label">YTD volume</div>
+          <div class="ds-value">500t</div>
+          <div class="ds-sub">1 completed batch</div>
+          <div class="ds-trend up">First trade ✓</div>
+        </div>
+      </div>
+
+      <!-- Active shipment tracker -->
+      <div class="dash-widget" style="margin-bottom:1.5rem;">
+        <div class="dw-title">Active shipment — Flaxseed Lot #SRA-2026-001 <span>500t · Kostanay → Yinchuan</span></div>
+        <div style="display:flex;gap:0;margin-bottom:1rem;">
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--sage);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:600;">✓</div>
+            <div style="font-size:10px;font-weight:500;">Contracted</div>
+            <div style="font-size:10px;opacity:.4;">May 11</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--sage);margin-top:13px;"></div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--sage);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:600;">✓</div>
+            <div style="font-size:10px;font-weight:500;">SGS Certified</div>
+            <div style="font-size:10px;opacity:.4;">May 13</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--sage);margin-top:13px;"></div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--sage);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:600;">✓</div>
+            <div style="font-size:10px;font-weight:500;">Loaded & Departed</div>
+            <div style="font-size:10px;opacity:.4;">May 15</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin-top:13px;"></div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--amber);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:600;animation:pls 2s infinite;">→</div>
+            <div style="font-size:10px;font-weight:500;color:var(--amber);">In Transit</div>
+            <div style="font-size:10px;opacity:.4;">Est. May 27</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin-top:13px;"></div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--border);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:.35;">□</div>
+            <div style="font-size:10px;opacity:.4;">Khorgos Customs</div>
+            <div style="font-size:10px;opacity:.4;">Est. May 28</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin-top:13px;"></div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--border);margin:0 auto .35rem;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:.35;">□</div>
+            <div style="font-size:10px;opacity:.4;">Delivered Yinchuan</div>
+            <div style="font-size:10px;opacity:.4;">Est. Jun 2</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;padding:.85rem;background:var(--paper);border-radius:6px;font-size:12px;">
+          <div><div style="opacity:.45;margin-bottom:2px;">Lot</div><div class="mono" style="font-weight:500;">#SRA-2026-001</div></div>
+          <div><div style="opacity:.45;margin-bottom:2px;">Product</div><div style="font-weight:500;">Flaxseed 97%</div></div>
+          <div><div style="opacity:.45;margin-bottom:2px;">Volume</div><div class="mono" style="font-weight:500;">500 t</div></div>
+          <div><div style="opacity:.45;margin-bottom:2px;">Price paid</div><div class="mono" style="font-weight:500;">$512/t FCA</div></div>
+          <div><div style="opacity:.45;margin-bottom:2px;">LC ref.</div><div class="mono" style="font-weight:500;">CCB-2026-0441</div></div>
+        </div>
+      </div>
+
+      <div class="dash-two-col">
+        <!-- Recent bids -->
+        <div class="dash-widget">
+          <div class="dw-title">Open bids <span onclick="showDash('bids')" style="cursor:pointer;color:var(--sage);">View all →</span></div>
+          <table class="orders-table" style="font-size:12px;">
+            <thead><tr><th>Product</th><th>Qty</th><th>Bid price</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Flaxseed 97%</td><td class="mono">800 t</td><td class="mono">$505/t</td><td><span class="status-pill s-open">Open</span></td></tr>
+              <tr><td>Feed Barley</td><td class="mono">2,000 t</td><td class="mono">$148/t</td><td><span class="status-pill s-open">Open</span></td></tr>
+            </tbody>
+          </table>
+          <button class="btn-sm" style="margin-top:1rem;width:100%;background:white;color:var(--sage);border:1.5px solid var(--sage);" onclick="openBidModal()">+ Place new bid</button>
+        </div>
+
+        <!-- Price alert widget -->
+        <div class="dash-widget">
+          <div class="dw-title">Price alerts <span style="color:var(--sage);">2 active</span></div>
+          <div style="font-size:13px;padding:.75rem;background:var(--sage-light);border-radius:6px;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-weight:500;">Flaxseed FCA</div><div style="font-size:11px;opacity:.55;margin-top:1px;">Alert if drops below $500/t</div></div>
+            <div><div style="font-family:var(--mono);font-size:12px;color:var(--sage);">$512 now</div><div style="font-size:10px;opacity:.45;margin-top:1px;">+2.4% above trigger</div></div>
+          </div>
+          <div style="font-size:13px;padding:.75rem;background:var(--amber-light);border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-weight:500;">Feed Barley FCA</div><div style="font-size:11px;opacity:.55;margin-top:1px;">Alert if drops below $145/t</div></div>
+            <div><div style="font-family:var(--mono);font-size:12px;color:var(--amber);">$152 now</div><div style="font-size:10px;opacity:.45;margin-top:1px;">+4.8% above trigger</div></div>
+          </div>
+          <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+            <div class="bid-label">Add new alert</div>
+            <div style="display:flex;gap:.5rem;">
+              <select class="bid-input" style="flex:1;padding:8px 10px;font-size:12px;"><option>Flaxseed FCA</option><option>Barley FCA</option><option>Sunflower Oil</option></select>
+              <input class="bid-input" type="number" placeholder="$target" style="width:90px;padding:8px 10px;font-size:12px;font-family:var(--mono);">
+              <button class="btn-sm" style="white-space:nowrap;">Set</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /dash-overview -->
+
+    <!-- Bids panel (hidden by default) -->
+    <div id="dash-bids" style="display:none;">
+      <div class="dash-header">
+        <div class="dash-title">My Bids</div>
+        <button class="btn-sm" onclick="openBidModal()">+ New bid</button>
+      </div>
+      <div class="dash-widget">
+        <table class="orders-table">
+          <thead><tr><th>Date</th><th>Product</th><th>Volume</th><th>Bid price</th><th>Delivery window</th><th>Matched lot</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono" style="font-size:12px;">May 20</td>
+              <td><strong>Flaxseed 97%</strong></td>
+              <td class="mono">800 t</td>
+              <td class="mono">$505/t FCA</td>
+              <td>Jul 2026</td>
+              <td style="opacity:.45;">Pending match</td>
+              <td><span class="status-pill s-open">Open</span></td>
+              <td><button style="font-size:12px;background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;cursor:pointer;" onclick="alert('Bid #BID-2026-003 withdrawn')">Withdraw</button></td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:12px;">May 19</td>
+              <td><strong>Feed Barley</strong></td>
+              <td class="mono">2,000 t</td>
+              <td class="mono">$148/t FCA</td>
+              <td>Jun 2026</td>
+              <td style="opacity:.45;">Pending match</td>
+              <td><span class="status-pill s-open">Open</span></td>
+              <td><button style="font-size:12px;background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;cursor:pointer;" onclick="alert('Bid #BID-2026-002 withdrawn')">Withdraw</button></td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:12px;">May 11</td>
+              <td><strong>Flaxseed 97%</strong></td>
+              <td class="mono">500 t</td>
+              <td class="mono">$510/t FCA</td>
+              <td>Jun 2026</td>
+              <td><span style="color:var(--sage);font-weight:500;">Lot #KST-240031</span></td>
+              <td><span class="status-pill s-matched">Matched</span></td>
+              <td><button style="font-size:12px;background:none;border:1px solid var(--sage);color:var(--sage);padding:4px 10px;border-radius:4px;cursor:pointer;">View contract</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Orders panel (hidden) -->
+    <div id="dash-orders" style="display:none;">
+      <div class="dash-header">
+        <div class="dash-title">Active Orders</div>
+      </div>
+      <div class="dash-widget">
+        <table class="orders-table">
+          <thead><tr><th>Order ref.</th><th>Product</th><th>Volume</th><th>Value</th><th>Origin</th><th>Route</th><th>ETA</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono" style="font-weight:500;">#SRA-2026-001</td>
+              <td><strong>Flaxseed 97%</strong></td>
+              <td class="mono">500 t</td>
+              <td class="mono">$256,000</td>
+              <td>Kostanay</td>
+              <td>Khorgos rail</td>
+              <td class="mono" style="color:var(--amber);">Jun 2</td>
+              <td><span class="status-pill s-transit">In transit</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:1.5rem;padding:1rem;background:var(--sage-light);border-radius:8px;font-size:13px;color:var(--sage);">
+          <strong>Shipment update (May 22):</strong> Train #KTZ-88441 departed Kostanay on May 15. Currently passing Almaty junction. Expected Khorgos arrival May 27. GACC documents pre-submitted.
+        </div>
+      </div>
+    </div>
+
+    <!-- LC panel (hidden) -->
+    <div id="dash-lc" style="display:none;">
+      <div class="dash-header"><div class="dash-title">LC Management</div></div>
+      <div class="dash-two-col">
+        <div class="dash-widget">
+          <div class="dw-title">CCB Astana Facility</div>
+          <div class="result-line" style="color:var(--ink);border-color:var(--border);"><span class="result-label">Total facility</span><span class="result-val">$500,000</span></div>
+          <div class="result-line" style="color:var(--ink);border-color:var(--border);"><span class="result-label">Currently drawn</span><span class="result-val" style="color:var(--amber);">$242,000</span></div>
+          <div class="result-line" style="color:var(--ink);border-color:var(--border);"><span class="result-label">Available</span><span class="result-val" style="color:var(--sage);">$258,000</span></div>
+          <div class="result-line" style="color:var(--ink);border-color:var(--border);"><span class="result-label">Facility expiry</span><span class="result-val">Dec 31, 2026</span></div>
+          <div style="margin-top:1rem;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:48%;height:100%;background:var(--sage);border-radius:4px;"></div></div>
+          <div style="font-size:11px;opacity:.45;margin-top:.35rem;">48% utilised</div>
+        </div>
+        <div class="dash-widget">
+          <div class="dw-title">Active LCs</div>
+          <div style="padding:.85rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.75rem;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;font-size:13px;"><strong>CCB-2026-0441</strong><span class="status-pill s-transit">In use</span></div>
+            <div style="font-size:12px;opacity:.55;">Flaxseed 500t · $242,000 · Expires Jun 30, 2026</div>
+            <div style="font-size:12px;color:var(--sage);margin-top:.35rem;">CCB Astana confirmed · UCP 600</div>
+          </div>
+          <div style="padding:.85rem;border:1px dashed var(--border);border-radius:8px;text-align:center;font-size:13px;opacity:.45;cursor:pointer;" onclick="alert('LC application form — contact CCB Astana: ccbastana@cn.ccb.com')">
+            + Open new LC for next order
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History panel (hidden) -->
+    <div id="dash-history" style="display:none;">
+      <div class="dash-header"><div class="dash-title">Trade History</div></div>
+      <div class="dash-widget">
+        <div style="text-align:center;padding:3rem;opacity:.45;">
+          <div style="font-size:2rem;margin-bottom:.75rem;">📦</div>
+          <div style="font-weight:500;margin-bottom:.35rem;">First completed trade in progress</div>
+          <div style="font-size:13px;">Order #SRA-2026-001 will appear here after delivery confirmation and LC settlement.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dash-main -->
+</div><!-- /dash-layout -->
+</div><!-- /page-dashboard -->
+
+<!-- ═══ BID MODAL ═══ -->
+<div class="modal-overlay" id="bid-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBidModal()">✕</button>
+    <div id="bid-form-state">
+      <div class="modal-title">Place a bid</div>
+      <div class="modal-sub">Your bid goes to matching supply. We'll confirm within 24 hours if a lot is available at your price.</div>
+      <div class="form-row">
+        <label class="form-label">Product</label>
+        <select class="form-select" id="bid-product">
+          <option>亚麻籽 Flaxseed — Brown 97%</option>
+          <option>大麦 Feed Barley — Grade 2</option>
+          <option>亚麻籽 Flaxseed — Yellow 99%</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="form-row">
+          <label class="form-label">Quantity (tonnes)</label>
+          <input class="form-input" type="number" placeholder="e.g. 500" id="bid-qty" oninput="updateBidSummary()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Target price (USD/t FCA)</label>
+          <input class="form-input" type="number" placeholder="e.g. 505" id="bid-price" oninput="updateBidSummary()">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Delivery window</label>
+        <select class="form-select" id="bid-delivery">
+          <option>June 2026</option>
+          <option>July 2026</option>
+          <option>August 2026</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Payment method</label>
+        <select class="form-select">
+          <option>Documentary LC via CCB Astana</option>
+          <option>TT (bank transfer) — requires approval</option>
+        </select>
+      </div>
+      <div class="bid-summary" id="bid-summary" style="display:none;">
+        <div class="bid-sum-row"><span style="opacity:.6;">Total bid value</span><span class="mono" id="bs-value" style="font-weight:500;"></span></div>
+        <div class="bid-sum-row"><span style="opacity:.6;">Estimated landed cost (Yinchuan)</span><span class="mono" id="bs-landed" style="font-weight:500;"></span></div>
+        <div class="bid-sum-row"><span style="opacity:.6;">LC required</span><span class="mono" id="bs-lc" style="font-weight:500;color:var(--sage);"></span></div>
+      </div>
+      <button class="btn-lg" style="width:100%;margin-top:.5rem;" onclick="submitBid()">Submit bid →</button>
+    </div>
+    <div id="bid-success-state" class="success-state" style="display:none;">
+      <div class="success-icon">✅</div>
+      <div style="font-family:var(--serif);font-size:1.4rem;margin-bottom:.5rem;">Bid submitted</div>
+      <div style="font-size:13px;opacity:.6;line-height:1.65;margin-bottom:1.5rem;">We're matching your bid against available elevator inventory. You'll receive a confirmation within 24 hours. Check your dashboard for updates.</div>
+      <button class="btn-lg" onclick="closeBidModal()">Back to dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REQUEST ACCESS MODAL ═══ -->
+<div class="modal-overlay" id="access-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('access-modal').classList.remove('open')">✕</button>
+    <div class="modal-title">Request platform access</div>
+    <div class="modal-sub">Tell us about your company. We'll review and onboard you within 2 business days.</div>
+    <div class="form-row"><label class="form-label">Company name</label><input class="form-input" placeholder="e.g. 厦门国贸集团股份有限公司"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="form-row"><label class="form-label">Your name</label><input class="form-input" placeholder="Name"></div>
+      <div class="form-row"><label class="form-label">Role</label><input class="form-input" placeholder="e.g. Procurement Manager"></div>
+    </div>
+    <div class="form-row"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@company.com"></div>
+    <div class="form-row">
+      <label class="form-label">I am a</label>
+      <select class="form-select">
+        <option>Chinese buyer / importer</option>
+        <option>Kazakhstan elevator / producer</option>
+        <option>Trading company</option>
+        <option>Investor / financial institution</option>
+      </select>
+    </div>
+    <div class="form-row"><label class="form-label">Typical annual volume (tonnes)</label><input class="form-input" placeholder="e.g. 5,000 t/year"></div>
+    <button class="btn-lg" style="width:100%;margin-top:.25rem;" onclick="submitAccess()">Request access →</button>
+  </div>
+</div>
+
+<script>
+/* ── PAGE NAV ── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── DASHBOARD NAV ── */
+function showDash(section) {
+  ['overview','bids','orders','history','lc','invoices'].forEach(s => {
+    const el = document.getElementById('dash-' + s);
+    if (el) el.style.display = 'none';
+  });
+  const el = document.getElementById('dash-' + section);
+  if (el) el.style.display = 'block';
+  document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+/* ── HOME CALCULATOR ── */
+function homeCalc() {
+  const ewp = parseFloat(document.getElementById('c-ewp').value) || 488;
+  const qty = parseFloat(document.getElementById('c-qty').value) || 500;
+  const rail = parseFloat(document.getElementById('c-region').value) || 42;
+  const sell = parseFloat(document.getElementById('c-sell').value) || 571;
+  const prod = document.getElementById('c-prod').value;
+  const dutyRate = prod === 'barley' ? 0.03 : 0.09;
+  const fca = ewp + rail + 8 + 5;
+  const duty = fca * dutyRate;
+  const landed = fca + duty + 14 + 18;
+  const margin = sell - fca;
+  const total = margin * qty;
+  const pct = (margin / sell * 100).toFixed(1);
+  const roi = ((margin / (fca * 0.20)) * (365/60) * 100).toFixed(0);
+  document.getElementById('r-ewp').textContent = '$' + ewp + '/t';
+  document.getElementById('r-rail').textContent = '$' + rail + '/t';
+  document.getElementById('r-fca').textContent = '$' + fca.toFixed(0) + '/t';
+  document.getElementById('r-duty').textContent = '$' + duty.toFixed(0) + '/t';
+  document.getElementById('r-landed').textContent = '$' + landed.toFixed(0) + '/t';
+  document.getElementById('r-sell2').textContent = '$' + sell + '/t';
+  const mEl = document.getElementById('r-mgn');
+  const tEl = document.getElementById('r-tot');
+  mEl.textContent = (margin>=0?'+':'') + '$' + margin.toFixed(0) + '/t';
+  tEl.textContent = (total>=0?'+':'') + '$' + Math.round(total).toLocaleString();
+  mEl.style.color = margin>=0?'#8aab8b':'#f09595';
+  tEl.style.color = total>=0?'#8aab8b':'#f09595';
+  document.getElementById('r-pct').textContent = 'Margin: ' + pct + '% · Capital ROI: ~' + roi + '% ann. (20% equity, 60d turn)';
+}
+homeCalc();
+
+/* ── FREIGHT CALCULATOR ── */
+function calcFreight() {
+  const rail = parseFloat(document.getElementById('fc-origin').value) || 42;
+  const cr = parseFloat(document.getElementById('fc-dest').value) || 8;
+  const qty = parseFloat(document.getElementById('fc-qty').value) || 500;
+  const total = rail + cr + 6 + 4 + 1;
+  document.getElementById('fc-rail').textContent = '$' + rail + '/t';
+  document.getElementById('fc-cr').textContent = '$' + cr + '/t';
+  document.getElementById('fc-total').textContent = '$' + total + '/t';
+  document.getElementById('fc-batch').textContent = '$' + (total * qty).toLocaleString() + ' total freight';
+}
+
+/* ── BID MODAL ── */
+function openBidModal() {
+  document.getElementById('bid-form-state').style.display = 'block';
+  document.getElementById('bid-success-state').style.display = 'none';
+  document.getElementById('bid-modal').classList.add('open');
+}
+function closeBidModal() {
+  document.getElementById('bid-modal').classList.remove('open');
+}
+function updateBidSummary() {
+  const qty = parseFloat(document.getElementById('bid-qty').value);
+  const price = parseFloat(document.getElementById('bid-price').value);
+  if (qty && price) {
+    const val = qty * price;
+    const landed = (price + 42 + 8 + 5 + price*0.09 + 32).toFixed(0);
+    document.getElementById('bs-value').textContent = '$' + val.toLocaleString();
+    document.getElementById('bs-landed').textContent = '~$' + landed + '/t';
+    document.getElementById('bs-lc').textContent = '$' + Math.round(val * 1.05).toLocaleString();
+    document.getElementById('bid-summary').style.display = 'block';
+  }
+}
+function submitBid() {
+  const qty = document.getElementById('bid-qty').value;
+  const price = document.getElementById('bid-price').value;
+  if (!qty || !price) { alert('Please enter quantity and target price.'); return; }
+  document.getElementById('bid-form-state').style.display = 'none';
+  document.getElementById('bid-success-state').style.display = 'block';
+}
+function submitAccess() {
+  document.getElementById('access-modal').classList.remove('open');
+  setTimeout(() => {
+    showPage('dashboard');
+  }, 300);
+}
+
+/* ── FILTER + TAB BUTTONS ── */
+document.querySelectorAll('.mkt-tab').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.mkt-tab').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* ── WIRE UP REQUEST ACCESS BUTTON ── */
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  if (btn.textContent.trim() === 'Request Access') {
+    btn.onclick = () => document.getElementById('access-modal').classList.add('open');
+  }
+});
+
+/* ── CLOSE MODAL ON BACKDROP CLICK ── */
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
