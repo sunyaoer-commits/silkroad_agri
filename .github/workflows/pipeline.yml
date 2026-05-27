@@ -1,0 +1,47 @@
+name: Daily Data Pipeline
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Fetch data
+        env:
+          COMTRADE_KEY: ${{ secrets.COMTRADE_KEY }}
+        run: python scripts/fetch.py
+
+      - name: Generate report
+        run: |
+          HOUR=$(date -u +%H)
+          if [ "$HOUR" -lt "06" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python scripts/report.py
+          fi
+
+      - name: Commit data
+        run: |
+          git config user.name "SilkRoad Data Bot"
+          git config user.email "data@silkroadagri.com"
+          git add data/ reports/ db/ || true
+          git diff --staged --quiet || git commit -m "auto: data update $(date -u +%Y-%m-%d)"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
