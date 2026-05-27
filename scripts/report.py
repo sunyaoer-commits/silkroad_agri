@@ -128,6 +128,16 @@ def generate_report():
             rows += f"| {p} | {q} | {v} | {up} |\n"
         return rows
 
+    # Build annual rows string (avoid backslash in f-string)
+    if annual:
+        annual_rows = ""
+        for r in annual:
+            vol = fmt_volume(r['t'])
+            val = fmt_price(r['v']/1e6 if r['v'] else None, '$', 1)
+            annual_rows += f"| {r['yr']} | {vol} | {val}M |\n"
+    else:
+        annual_rows = "| 数据加载中 | — | — |\n"
+
     report_md = f"""# 哈中农业贸易日报
 **{TODAY_CN}（{WEEKDAY_CN}）**
 
@@ -232,7 +242,7 @@ def generate_report():
 
 | 年份 | 总出口量 | 总出口额 |
 |------|----------|----------|
-{"".join(f"| {r['yr']} | {fmt_volume(r['t'])} | {fmt_price(r['v']/1e6 if r['v'] else None,'$',1)}M |\n" for r in annual) or "| 数据加载中 | — | — |\n"}
+{annual_rows}
 
 *数据来源：UN Comtrade HS 1204 / 中国海关总署（数据延迟约45天）*
 
