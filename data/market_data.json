@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-01T16:27:38.366159Z",
+    "generated": "2026-07-02T05:59:37.152717Z",
     "sources": [
       "UN Comtrade",
       "Grain Union KZ",
@@ -10,14 +10,14 @@
       "KTZ tariff"
     ],
     "db_records": {
-      "prices": 450,
+      "prices": 460,
       "trade_flows": 64,
       "news_items": 0
     }
   },
   "fx": {
-    "KZT_per_USD": 485.21,
-    "CNY_per_USD": 6.7923
+    "KZT_per_USD": 494.2,
+    "CNY_per_USD": 7.24
   },
   "spot_prices": {
     "barley_ewx_kz": 138.0,
@@ -33,10 +33,6 @@
   },
   "price_history": {
     "flaxseed_fca": [
-      {
-        "period": "2025-01-01",
-        "value": 488.6
-      },
       {
         "period": "2025-03-01",
         "value": 486.2
@@ -244,13 +240,13 @@
       {
         "period": "2026-07-01",
         "value": 512.0
+      },
+      {
+        "period": "2026-07-02",
+        "value": 512.0
       }
     ],
     "barley_fca": [
-      {
-        "period": "2025-01-01",
-        "value": 144.8
-      },
       {
         "period": "2025-03-01",
         "value": 145.7
@@ -457,6 +453,10 @@
       },
       {
         "period": "2026-07-01",
+        "value": 152.0
+      },
+      {
+        "period": "2026-07-02",
         "value": 152.0
       }
     ],
