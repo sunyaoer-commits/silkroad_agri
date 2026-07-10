@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-10T06:04:05.673093Z",
+    "generated": "2026-07-10T16:24:35.217921Z",
     "sources": [
       "UN Comtrade",
       "Grain Union KZ",
@@ -16,8 +16,8 @@
     }
   },
   "fx": {
-    "KZT_per_USD": 494.2,
-    "CNY_per_USD": 7.24
+    "KZT_per_USD": 466.83,
+    "CNY_per_USD": 6.7803
   },
   "spot_prices": {
     "barley_ewx_kz": 138.0,
