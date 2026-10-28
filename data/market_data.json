@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-10-27T19:14:04.524639Z",
+    "generated": "2026-10-28T07:57:05.231638Z",
     "sources": [
       "UN Comtrade",
       "Grain Union KZ",
@@ -10,7 +10,7 @@
       "KTZ tariff"
     ],
     "db_records": {
-      "prices": 1630,
+      "prices": 1640,
       "trade_flows": 64,
       "news_items": 0
     }
@@ -704,6 +704,10 @@
       {
         "period": "2026-10-27",
         "value": 512.0
+      },
+      {
+        "period": "2026-10-28",
+        "value": 512.0
       }
     ],
     "barley_fca": [
@@ -1377,6 +1381,10 @@
       },
       {
         "period": "2026-10-27",
+        "value": 152.0
+      },
+      {
+        "period": "2026-10-28",
         "value": 152.0
       }
     ],
